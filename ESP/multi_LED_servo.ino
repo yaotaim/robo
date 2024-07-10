@@ -1,3 +1,4 @@
+//ESPでマルチタスク+シリアル入力でLチカ+サーボ
 #include <ESP32Servo.h>
 
 byte val = 0;
