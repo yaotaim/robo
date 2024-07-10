@@ -10,13 +10,21 @@ int ds2= 23;//左前
 int ds3 = 24;//左後ろ
 int ds4 = 25;//右後ろ
 
+int le = 44;//左目
+int me = 26;//真ん中目
+int re = 45;//右目
+
+
+
 byte val = 0;
+byte val3 = 0;
 int f=FORWARD;
 int b=BACKWARD;
 int r=RELEASE;
 
 void setup() {
-  Serial.begin(9600);//シリアル通信
+  Serial.begin(115200);//シリアル通信
+  Serial3.begin(9600);
   motor1.setSpeed(255);//右前
   motor2.setSpeed(255);//左前
   motor3.setSpeed(255);//左後ろ
@@ -25,15 +33,41 @@ void setup() {
  
 void loop() {
   if (digitalRead(ds1)==LOW && digitalRead(ds2) == LOW && digitalRead(ds3) == LOW && digitalRead(ds4) == LOW){
+    if (digitalRead(le)==LOW && digitalRead(me) == HIGH && digitalRead(re) == HIGH){
+      motor1.run(f);
+      motor2.run(b);
+      motor3.run(b);
+      motor4.run(f);
+      delay(1000);
+    }else if(digitalRead(le)==HIGH && digitalRead(me) == HIGH && digitalRead(re) == LOW){
+      motor1.run(b);
+      motor2.run(f);
+      motor3.run(f);
+      motor4.run(b);
+      delay(1000);
+    }else{
+        
     if (Serial.available() > 0) {
       val = Serial.read();
-      if (val =='w' ){//前
+      val3=Serial3.read();
+      
+      if (val3 =='m' ){//面
+        Serial.println("men");
+        motor1.run(b);
+        motor2.run(b);
+        motor3.run(b);
+        motor4.run(b);
+        delay(3000); 
+
+      }else if (val =='u'){//前
+        Serial.println("forward"); 
         motor1.run(f);
         motor2.run(f);
         motor3.run(f);
         motor4.run(f);
         delay(1000);  
       }else if (val =='x'){//後
+        Serial.println("backward");
         motor1.run(b);
         motor2.run(b);
         motor3.run(b);
@@ -85,20 +119,23 @@ void loop() {
           motor4.run(f);
           delay(100);  
     }
+
+    }
+  
   
   }else if(digitalRead(ds1)==LOW && digitalRead(ds2) == LOW && digitalRead(ds3) == HIGH && digitalRead(ds4) == LOW){
     motor1.run(r);//左後ろ見失う=>右前
     motor2.run(f);
     motor3.run(r);
     motor4.run(f);
-    delay(100);  
+    delay(1000);  
 
   }else if(digitalRead(ds1)==LOW && digitalRead(ds2) == LOW && digitalRead(ds3) == LOW && digitalRead(ds4) == HIGH){
     motor1.run(f);//右後ろ見失う=>左前
     motor2.run(r);
     motor3.run(f);
     motor4.run(r);
-    delay(100);  
+    delay(1000);  
 
   }else if(digitalRead(ds1)==LOW && digitalRead(ds2) == LOW && digitalRead(ds3) == HIGH && digitalRead(ds4) == HIGH){
     motor1.run(f);//後ろ見失う=>前
@@ -108,25 +145,40 @@ void loop() {
     delay(1000);
 
   }else if(digitalRead(ds1)==HIGH && digitalRead(ds2) == LOW && digitalRead(ds3) == LOW && digitalRead(ds4) == LOW){
-    motor1.run(f);//右前見失う=>左回り
+    motor1.run(b);//右前見失う=>左回り
+    motor2.run(b);
+    motor3.run(b);
+    motor4.run(b);
+    delay(1000); 
+    motor1.run(f);
     motor2.run(b);
     motor3.run(b);
     motor4.run(f);
-    delay(1000);
+    delay(4000);
   
   }else if(digitalRead(ds1)==LOW && digitalRead(ds2) == HIGH && digitalRead(ds3) == LOW && digitalRead(ds4) == LOW){
     motor1.run(b);//左前失う=>右まわり
+    motor2.run(b);
+    motor3.run(b);
+    motor4.run(b);
+    delay(1000); 
+    motor1.run(b);
     motor2.run(f);
     motor3.run(f);
     motor4.run(b);
-    delay(1000);
+    delay(3800);
   
   }else if(digitalRead(ds1)==HIGH && digitalRead(ds2) == HIGH && digitalRead(ds3) == LOW && digitalRead(ds4) == LOW){
-    motor1.run(b);//左前失う=>右まわり
+    motor1.run(b);//前失う=>右まわり
+    motor2.run(b);
+    motor3.run(b);
+    motor4.run(b);
+     delay(1000); 
+    motor1.run(b);
     motor2.run(f);
     motor3.run(f);
     motor4.run(b);
-    delay(2000);
+    delay(3800);
     
   }else{
     motor1.run(r);
@@ -134,5 +186,5 @@ void loop() {
     motor3.run(r);
     motor4.run(r);
   }
-  delay(100);
+  //delay(100);
 }
