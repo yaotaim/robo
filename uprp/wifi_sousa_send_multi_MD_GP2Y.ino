@@ -404,12 +404,12 @@ void left() {
   Serial.println("左回り");
   State2 = "左回";
   // モーターA前進
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, LOW);
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
   ledcWrite(pwmChannelA, dutyCycle);
   // モーターB後退
-  digitalWrite(IN3, LOW);
-  digitalWrite(IN4, HIGH);
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
   ledcWrite(pwmChannelB, dutyCycle);
   handleRoot();
 }
@@ -418,12 +418,12 @@ void right() {
   Serial.println("右回り");
   State2 = "右回";
   // モーターA後退
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, HIGH);
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
   ledcWrite(pwmChannelA, dutyCycle);
   // モーターB後退
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, LOW);
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
   ledcWrite(pwmChannelB, dutyCycle);
   handleRoot();
 }
