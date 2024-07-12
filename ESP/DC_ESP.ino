@@ -1,14 +1,14 @@
 //ESPでシリアル入力してDCモーターを操作(L298N)
 
 // モーターAのピン
-int ENA = 12;
-int IN1 = 14;
-int IN2 = 27;
+int ENA = 33;
+int IN1 = 25;
+int IN2 = 26;
 
 // モーターBのピン
-int ENB = 33;
-int IN3 = 26;
-int IN4 = 25;
+int IN3 = 27;
+int IN4 = 14;
+int ENB = 12;
 
 // PWM設定
 const int freq = 30000;
