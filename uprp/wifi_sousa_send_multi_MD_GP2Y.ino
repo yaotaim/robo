@@ -10,12 +10,15 @@ const char* password = "asciinew";
 
 WebServer server(80);
 
-int ENA = 12; 
-int IN1 = 14; 
-int IN2 = 27; 
-int IN3 = 13; 
-int IN4 = 32; 
-int ENB = 33; 
+// モーターAのピン
+int ENA = 33;
+int IN1 = 32;
+int IN2 = 26;
+
+// モーターBのピン
+int IN3 = 27;
+int IN4 = 14;
+int ENB = 12;
 
 const int freq = 30000;
 const int pwmChannelA = 0;
@@ -372,24 +375,56 @@ void kote() {
 void forward() {
   Serial.println("前進");
   State2 = "前";
+  // モーターA前進
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  ledcWrite(pwmChannelA, dutyCycle);
+  // モーターB前進
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+  ledcWrite(pwmChannelB, dutyCycle);
   handleRoot();
 }
 
 void backward() {
   Serial.println("後進");
   State2 = "後";
+  // モーターA後退
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+  ledcWrite(pwmChannelA, dutyCycle);
+  // モーターB後退
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
+  ledcWrite(pwmChannelB, dutyCycle);
   handleRoot();
 }
 
 void left() {
   Serial.println("左回り");
   State2 = "左回";
+  // モーターA前進
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  ledcWrite(pwmChannelA, dutyCycle);
+  // モーターB後退
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, HIGH);
+  ledcWrite(pwmChannelB, dutyCycle);
   handleRoot();
 }
 
 void right() {
   Serial.println("右回り");
   State2 = "右回";
+  // モーターA後退
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
+  ledcWrite(pwmChannelA, dutyCycle);
+  // モーターB後退
+  digitalWrite(IN3, HIGH);
+  digitalWrite(IN4, LOW);
+  ledcWrite(pwmChannelB, dutyCycle);
   handleRoot();
 }
 
@@ -397,6 +432,14 @@ void stop() {
   Serial.println("停止");
   Serial2.println("q");
   State2 = "止";
+  // モーターA停止
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, LOW);
+  ledcWrite(pwmChannelA, 0);
+  // モーターB停止
+  digitalWrite(IN3, LOW);
+  digitalWrite(IN4, LOW);
+  ledcWrite(pwmChannelB, 0);
   handleRoot();
 }
 
