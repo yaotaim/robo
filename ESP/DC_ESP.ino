@@ -1,5 +1,8 @@
 //ESPでシリアル入力してDCモーターを操作(L298N)
 
+
+//シリアル入力してDCモーターを操作(L298N)
+
 // モーターAのピン
 int ENA = 33;
 int IN1 = 25;
@@ -48,24 +51,24 @@ void loop() {
       case '1':
         Serial.println("前進");
         // モーターA前進
-        digitalWrite(IN1, LOW);
-        digitalWrite(IN2, HIGH);
+        digitalWrite(IN1, HIGH);
+        digitalWrite(IN2, LOW);
         ledcWrite(pwmChannelA, dutyCycle);
         // モーターB前進
-        digitalWrite(IN3, LOW);
-        digitalWrite(IN4, HIGH);
+        digitalWrite(IN3, HIGH);
+        digitalWrite(IN4, LOW);
         ledcWrite(pwmChannelB, dutyCycle);
         break;
 
       case '2':
         Serial.println("後退");
         // モーターA後退
-        digitalWrite(IN1, HIGH);
-        digitalWrite(IN2, LOW);
+        digitalWrite(IN1, LOW);
+        digitalWrite(IN2, HIGH);
         ledcWrite(pwmChannelA, dutyCycle);
         // モーターB後退
-        digitalWrite(IN3, HIGH);
-        digitalWrite(IN4, LOW);
+        digitalWrite(IN3, LOW);
+        digitalWrite(IN4, HIGH);
         ledcWrite(pwmChannelB, dutyCycle);
         break;
 
