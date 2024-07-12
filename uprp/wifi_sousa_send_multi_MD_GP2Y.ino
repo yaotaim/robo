@@ -1,4 +1,6 @@
 //webサーバーたて+モーターとセンサのマルチ処理+シリアル送る
+//DCモーターの動きを試したい時はESP/DC_ESP.inoを試す
+
 #include <WiFi.h>
 #include <WebServer.h>
 #include <ESP32Servo.h>
