@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 #04の改良版
 
-#ライブラリインポート
 from HandFaceTracker02 import HandFaceTracker
 from HandFaceRenderer_sRA02 import HandFaceRenderer
 import argparse
