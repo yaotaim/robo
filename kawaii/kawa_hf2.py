@@ -16,7 +16,6 @@ import sys
 import serial
 import random
 
-# シリアルポートの設定
 ser = serial.Serial(
     port='/dev/ttyS0', 
     baudrate=115200,    
@@ -24,7 +23,6 @@ ser = serial.Serial(
 )
 time.sleep(2) 
 
-# pigpioデーモンに接続
 pig = pigpio.pi()
 if not pig.connected:
     print("Failed to connect to pigpiod")
@@ -46,12 +44,10 @@ mode2=None
 
 
 def fast_servo(gpio_pin, angle):
-    # 角度をパルス幅に変換
     pulse_width_ms = 0.5 + (angle / 180.0) * (2.5 - 0.5)
-    # パルス幅をデューティサイクル（範囲：0から100万）に変換
     duty_cycle = int((pulse_width_ms / 20.0) * 1000000)
-    # サーボを指定のデューティサイクルで動かす
     pig.hardware_PWM(gpio_pin, 50, duty_cycle)
+    
     if gpio_pin==12:
         S_kioku12 = angle
     elif gpio_pin==13:
@@ -217,26 +213,51 @@ while True:
                         y_pos = face.xyz[1] / 10
 
                         #顔の位置によってsen_faceの値を変える
-                        if x_pos < -10 and y_pos >5:
+                        if x_pos < -20 and y_pos >5:
                             sen_face = "w"
-                        elif x_pos < -10 and 5 >=y_pos>= -5:
-                            sen_face = "s"
-                        elif x_pos <= -10 and y_pos <-5:
-                            sen_face = "x"
+
+                        elif -20<=x_pos<-10 and y_pos >5:
+                            sen_face = "e"
 
                         elif -10<=x_pos<10 and y_pos >5:
-                            sen_face = "e"
-                        elif -10<=x_pos<10 and 5 >=y_pos>= -5:
+                            sen_face = "r"
+
+                        elif 10<=x_pos<20 and y_pos >5:
+                            sen_face = "t"
+
+                        elif 20<=x_pos and y_pos >5:
+                            sen_face = "y"
+                        #--------------------------------------
+                            
+                        elif x_pos < -20 and 5 >=y_pos>= -5:
+                            sen_face = "s"
+
+                        elif -20<=x_pos<-10 and 5 >=y_pos>= -5:
                             sen_face = "d"
-                        elif -10<=x_pos<10 and y_pos <-5:
+
+                        elif -10<=x_pos<10 and 5 >=y_pos>= -5:
+                            sen_face = "f"
+
+                        elif 10<=x_pos<20 and 5 >=y_pos>= -5:
+                            sen_face = "g"
+
+                        elif 20<=x_pos and 5 >=y_pos>= -5:
+                            sen_face = "h"
+                        #--------------------------------------
+                        elif x_pos < -20 and -5 >=y_pos:
+                            sen_face = "x"
+
+                        elif -20<=x_pos<-10 and -5 >=y_pos:
                             sen_face = "c"
 
-                        elif 10<x_pos and y_pos >5:
-                            sen_face = "r"
-                        elif 10<x_pos and 5 >=y_pos>= -5:
-                            sen_face = "f"
-                        elif 10<x_pos and y_pos <-5:
+                        elif -10<=x_pos<10 and -5 >=y_pos:
                             sen_face = "v"
+
+                        elif 10<=x_pos<20 and -5 >=y_pos:
+                            sen_face = "b"
+
+                        elif 20<=x_pos and -5 >=y_pos:
+                            sen_face = "n"
             else:
                 sen_face=None
             #ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
