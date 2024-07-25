@@ -27,12 +27,12 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
     ul,
     ol {
-      list-style: none;             /*リストの・を非表示にする*/
+      list-style: none;         
     }
 
     a {
-      color: inherit;               /*親要素の文字色を継承*/
-      text-decoration: none;        /*下線をなくす*/
+      color: inherit;             
+      text-decoration: none;       
       text-align: center;
     }
 
@@ -265,14 +265,14 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
 )rawliteral";
 
-String State1 = "未選択"; // 適切な初期状態に応じて初期化します
-String State2 = "ハロー"; // 適切な初期状態に応じて初期化します
+String State1 = "未選択"; 
+String State2 = "ハロー"; 
 
-// HTMLページを提供する関数
+
 void handleRoot() {
   String html = String(INDEX_HTML);
-  html.replace("%STATE1%", State1); // %STATE% のプレースホルダーを現在の State で置き換えます
-  html.replace("%STATE2%", State2); // %STATE% のプレースホルダーを現在の State で置き換えます
+  html.replace("%STATE1%", State1); 
+  html.replace("%STATE2%", State2); 
   server.send(200, "text/html", html);
 }
 
