@@ -544,7 +544,12 @@ while True:
 
                                   
                         elif kioku_kaisuu>=15 and kioku_kaisuu%3==0:#記憶回数が7以上かつ3の倍数
-                                pass
+                            s1=random.randint(45, 135)
+                            s2=random.randint(130, 180)
+                            fast_servo(12, s1)
+                            fast_servo(13, s2)
+                            
+                            
 
                         else:
                             kioku_kaisuu+=1
