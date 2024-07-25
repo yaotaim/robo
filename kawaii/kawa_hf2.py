@@ -561,50 +561,83 @@ while True:
                             #print(f"X:{int(face.xyz[0]/10)} cm, Y:{int(face.xyz[1]/10)} cm")
 
                     if sen_face=="w":
-                        if S_kioku12<=535:
+                        if S_kioku12<=155:
                             S_kioku12=S_kioku12+2
                         if S_kioku13<=180:
-                            S_kioku13=S_kioku13-2
+                            S_kioku13=S_kioku13-1
+                            
+                    elif sen_face=="w":
+                        if S_kioku12<=155:
+                            S_kioku12=S_kioku12+1
+                        if S_kioku13<=180:
+                            S_kioku13=S_kioku13-1
+                            
                             
                     elif sen_face=="s":
                         if S_kioku12<=155:
                             S_kioku12=S_kioku12+2
 
+                    elif sen_face=="d":
+                        if S_kioku12<=155:
+                            S_kioku12=S_kioku12+1
+
                     elif sen_face=="x":
                         if S_kioku12<=155:
                             S_kioku12=S_kioku12+2
                         if 90<=S_kioku13:
-                            S_kioku13=S_kioku13+2
+                            S_kioku13=S_kioku13+1
+
+                    elif sen_face=="c":
+                        if S_kioku12<=155:
+                            S_kioku12=S_kioku12+1
+                        if 90<=S_kioku13:
+                            S_kioku13=S_kioku13+1
 
 
                                           
-                    elif sen_face=="e":
+                    elif sen_face=="r":
                         if S_kioku13<=180:
-                            S_kioku13=S_kioku13-2
+                            S_kioku13=S_kioku13-1
                 
-                    elif sen_face=="d":
+                    elif sen_face=="f":
                         pass     
 
-                    elif sen_face=="c":
+                    elif sen_face=="v":
                         if 90<=S_kioku13:
-                            S_kioku13=S_kioku13+2
+                            S_kioku13=S_kioku13+1
 
                             
-                    elif sen_face=="r":
+                    elif sen_face=="t":
+                        if 65<=S_kioku12:
+                            S_kioku12=S_kioku12-1
+                        if S_kioku13<=180:
+                            S_kioku13=S_kioku13-1
+
+                    elif sen_face=="y":
                         if 65<=S_kioku12:
                             S_kioku12=S_kioku12-2
                         if S_kioku13<=180:
-                            S_kioku13=S_kioku13-2
+                            S_kioku13=S_kioku13-1
 
-                    elif sen_face=="f":
+                    elif sen_face=="g":
+                        if 65<=S_kioku12:
+                            S_kioku12=S_kioku12-1
+
+                    elif sen_face=="h":
                         if 65<=S_kioku12:
                             S_kioku12=S_kioku12-2
                       
-                    elif sen_face=="v":
+                    elif sen_face=="b":
+                        if 65<=S_kioku12:
+                            S_kioku12=S_kioku12-1
+                        if 90<=S_kioku13:
+                            S_kioku13=S_kioku13+2
+
+                    elif sen_face=="n":
                         if 65<=S_kioku12:
                             S_kioku12=S_kioku12-2
                         if 90<=S_kioku13:
-                            S_kioku13=S_kioku13+2
+                            S_kioku13=S_kioku13+1
                         
                     fast_servo(12, S_kioku12) 
                     fast_servo(13, S_kioku13)  
