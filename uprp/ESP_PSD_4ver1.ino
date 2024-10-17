@@ -133,5 +133,6 @@ void loop() {
         Serial.println("r");
         State = "r";
       }
+  }
   delay(100);
 }
