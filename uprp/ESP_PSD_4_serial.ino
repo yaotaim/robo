@@ -34,15 +34,15 @@ void loop() {
   int reading_2 = analogRead(PSD_2);
   int reading_3 = analogRead(PSD_3);
   int reading_4 = analogRead(PSD_4);
-  Serial.println(reading_1);
-  Serial.println(reading_2);
-  Serial.println(reading_3);
-  Serial.println(reading_4);
+  //Serial.println(reading_1);
+  //Serial.println(reading_2);
+  //Serial.println(reading_3);
+  //Serial.println(reading_4);
 
-  US(reading_1, 1700, 1900, PSData_1);
-  US(reading_2, 1600, 1800, PSData_2);
-  US(reading_3, 1400, 1600, PSData_3);
-  US(reading_4, 1500, 1700, PSData_4);
+  US(reading_1, 1700, 1800, PSData_1);
+  US(reading_2, 1500, 1700, PSData_2);
+  US(reading_3, 1200, 1600, PSData_3);
+  US(reading_4, 1400, 1700, PSData_4);
 
   //Serial.println(PSData_1);
   //Serial.println(PSData_2);
@@ -50,34 +50,34 @@ void loop() {
   //Serial.println(PSData_4);
 
   if (PSData_1 >= 5) {
-    Serial.print("1:✖️");
+    //Serial.print("1:x");
     jyotai_1 = 1;  
   } else {
-    Serial.print("1:◯");
+    //Serial.print("1:o");
     jyotai_1 = 0;  
   }
 
   if (PSData_2 >= 5) {
-    Serial.print("2:✖️");
+    //Serial.print("2:x");
     jyotai_2 = 1;  
   } else {
-    Serial.print("2:◯");
+    //Serial.print("2:o");
     jyotai_2 = 0;  
   }
 
   if (PSData_3 >= 5) {
-    Serial.print("3:✖️");
+    //Serial.print("3:x");
     jyotai_3 = 1;  
   } else {
-    Serial.print("3:◯");
+    //Serial.print("3:o");
     jyotai_3 = 0;  
   }
 
   if (PSData_4 >= 5) {
-    Serial.println("4:✖️");
+    //Serial.println("4:x");
     jyotai_4 = 1;  
   } else {
-    Serial.println("4:◯");
+    //Serial.println("4:o");
     jyotai_4 = 0;  
   }
 
