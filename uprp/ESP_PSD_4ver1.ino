@@ -15,6 +15,8 @@ int jyotai_2 = 0;
 int jyotai_3 = 0; 
 int jyotai_4 = 0; 
 
+String State = "初期";
+
 void US(int reading, int lowerBound, int upperBound, int sensa[]) {
   for (int i = 9; i > 0; i--) {
     sensa[i] = sensa[i - 1];
@@ -91,5 +93,45 @@ void loop() {
     jyotai_4 = 0;  
   }
 
+  if (jyotai_1 == 1 && jyotai_2 == 1 && jyotai_3 == 1 && jyotai_4 == 1) {//全部バツ
+      if(State!="s"){
+        Serial.println("s");
+        State = "s";
+      }
+  } else if (jyotai_1 == 1 && jyotai_2 == 0 && jyotai_3 == 0 && jyotai_4 == 0) {//右前だけバツ
+      if(State!="e"){
+        Serial.println("e");
+        State = "e";
+      }
+    } else if (jyotai_1 == 0 && jyotai_2 == 1 && jyotai_3 == 0 && jyotai_4 == 0) {//左前だけバツ
+      if(State!="q"){
+        Serial.println("q");
+        State = "q";
+      }
+    } else if (jyotai_1 == 0 && jyotai_2 == 0 && jyotai_3 == 1 && jyotai_4 == 0) {//右後ろだけバツ
+      if(State!="c"){
+        Serial.println("c");
+        State = "c";
+      }
+    } else if (jyotai_1 == 0 && jyotai_2 == 0 && jyotai_3 == 1 && jyotai_4 == 0) {//左後ろだけバツ
+      if(State!="z"){
+        Serial.println("z");
+        State = "z";
+      }
+    } else if (jyotai_1 == 1 && jyotai_2 == 1 && jyotai_3 == 0 && jyotai_4 == 0) {//前両方バツ
+      if(State!="w"){
+        Serial.println("w");
+        State = "w";
+      }
+    } else if (jyotai_1 == 0 && jyotai_2 == 0 && jyotai_3 == 1 && jyotai_4 == 1) {//後ろ両方バツ
+      if(State!="x"){
+        Serial.println("x");
+        State = "x";
+      }
+    } else{ //正常
+      if(State!="r"){
+        Serial.println("r");
+        State = "r";
+      }
   delay(100);
 }
