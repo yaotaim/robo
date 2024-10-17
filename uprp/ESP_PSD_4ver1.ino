@@ -86,10 +86,10 @@ void loop() {
   }
 
   if (sum_4 >= 7) {
-    Serial.print("4:x");
+    Serial.println("4:x");
     jyotai_4 = 1;  
   } else {
-    Serial.print("4:o");
+    Serial.println("4:o");
     jyotai_4 = 0;  
   }
 
