@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import pyrealsense2 as rs
 
-# グローバル変数
 clicked_hsv_values = []
 collecting_hsv = False
 red_hsv_range = None
@@ -10,8 +9,8 @@ blue_hsv_range = None
 yellow_hsv_range = None
 
 h_range=3
-s_range=20
-v_range=20
+s_range=30
+v_range=30
 
 def onMouse(event, x, y, flags, params):
     global clicked_hsv_values, collecting_hsv
@@ -28,30 +27,33 @@ def onMouse(event, x, y, flags, params):
 def calculate_hsv_range_red():
     global clicked_hsv_values, red_hsv_range
     if clicked_hsv_values:
-        # Hが179と0にまたがる場合を判定
-        h_values = np.array([hsv[0] for hsv in clicked_hsv_values])
-        is_split = any(h > 170 for h in h_values) and any(h < 10 for h in h_values)
+        # Hの値を抽出して0～90の範囲と91～180の範囲に分割
+        h_values_0_90 = [hsv for hsv in clicked_hsv_values if 0 <= hsv[0] <= 90]
+        h_values_91_180 = [hsv for hsv in clicked_hsv_values if 91 <= hsv[0] <= 180]
         
-        if is_split:
-            # 分割して範囲を設定
-            h_values_adjusted = np.where(h_values < 90, h_values + 180, h_values)
-            hsv_mean_split = np.mean(h_values_adjusted)
-            hsv_mean_split = (hsv_mean_split - 180) % 180
-            lower1 = np.clip([hsv_mean_split - h_range, s_range, v_range], [0, 0, 0], [179, 255, 255])
-            upper1 = np.clip([hsv_mean_split + h_range, s_range, v_range], [0, 0, 0], [179, 255, 255])
-            lower2 = np.array([0, 70, 70])
-            upper2 = np.array([10, 255, 255])
+        # 0～90の範囲での平均と範囲設定
+        if h_values_0_90:
+            hsv_mean_0_90 = np.mean(h_values_0_90, axis=0).astype(int)
+            lower1 = np.clip(hsv_mean_0_90 - [h_range, s_range, v_range], [0, 0, 0], [179, 255, 255])
+            upper1 = np.clip(hsv_mean_0_90 + [h_range, s_range, v_range], [0, 0, 0], [179, 255, 255])
         else:
-            # 通常の範囲設定
-            hsv_mean = np.mean(clicked_hsv_values, axis=0).astype(int)
-            lower1 = np.clip(hsv_mean - [h_range, s_range, v_range], [0, 0, 0], [179, 255, 255])
-            upper1 = np.clip(hsv_mean + [h_range, s_range, v_range], [0, 0, 0], [179, 255, 255])
+            lower1 = upper1 = np.array([0, 0, 0])
+
+        # 91～180の範囲での平均と範囲設定
+        if h_values_91_180:
+            hsv_mean_91_180 = np.mean(h_values_91_180, axis=0).astype(int)
+            lower2 = np.clip(hsv_mean_91_180 - [h_range, s_range, v_range], [0, 0, 0], [179, 255, 255])
+            upper2 = np.clip(hsv_mean_91_180 + [h_range, s_range, v_range], [0, 0, 0], [179, 255, 255])
+        else:
             lower2 = upper2 = np.array([0, 0, 0])
 
+        # 赤色のHSV範囲を設定
         red_hsv_range = (lower1, upper1, lower2, upper2)
         print(f"赤のHSV範囲: lower1={lower1.tolist()}, upper1={upper1.tolist()}, lower2={lower2.tolist()}, upper2={upper2.tolist()}")
     else:
         print("記録されたHSV値がありません。")
+    
+    # クリックしたHSV値リストをクリア
     clicked_hsv_values.clear()
 
 def calculate_hsv_range_blue():
@@ -97,8 +99,8 @@ def display_hsv_ranges():
     if red_hsv_range and blue_hsv_range and yellow_hsv_range:
         print(f"                lower_red1 = np.array([{', '.join(map(str, red_hsv_range[0]))}])")
         print(f"                upper_red1 = np.array([{', '.join(map(str, red_hsv_range[1]))}])")
-        print(f"                lower_red2 = np.array([{', '.join(map(str, red_hsv_range[0]))}])")
-        print(f"                upper_red2 = np.array([{', '.join(map(str, red_hsv_range[1]))}])")
+        print(f"                lower_red2 = np.array([{', '.join(map(str, red_hsv_range[2]))}])")
+        print(f"                upper_red2 = np.array([{', '.join(map(str, red_hsv_range[3]))}])")
         print(f" ")
         print(f"                lower_blue = np.array([{', '.join(map(str, blue_hsv_range[0]))}])")
         print(f"                upper_blue = np.array([{', '.join(map(str, blue_hsv_range[1]))}])")
@@ -140,7 +142,7 @@ def main():
             elif key == ord('r'):  # 青色の収集開始
                 collecting_hsv = True
                 clicked_hsv_values.clear()
-                print("青のHSV値の収集を開始しました。")
+                print("青のHSV値の収集を始しました。")
             elif key == ord('t'):  # 青色の収集停止
                 collecting_hsv = False
                 calculate_hsv_range_blue()
