@@ -27,25 +27,23 @@ def onMouse(event, x, y, flags, params):
 def calculate_hsv_range_red():
     global clicked_hsv_values, red_hsv_range
     if clicked_hsv_values:
-        # Hの値を抽出して0～90の範囲と91～180の範囲に分割
-        h_values_0_90 = [hsv for hsv in clicked_hsv_values if 0 <= hsv[0] <= 90]
-        h_values_91_180 = [hsv for hsv in clicked_hsv_values if 91 <= hsv[0] <= 180]
-        
-        # 0～90の範囲での平均と範囲設定
-        if h_values_0_90:
-            hsv_mean_0_90 = np.mean(h_values_0_90, axis=0).astype(int)
-            lower1 = np.clip(hsv_mean_0_90 - [h_range, s_range, v_range], [0, 0, 0], [179, 255, 255])
-            upper1 = np.clip(hsv_mean_0_90 + [h_range, s_range, v_range], [0, 0, 0], [179, 255, 255])
-        else:
-            lower1 = upper1 = np.array([0, 0, 0])
+        # H, S, Vそれぞれの最小値・最大値を計算
+        hsv_array = np.array(clicked_hsv_values)
+        h_min, s_min, v_min = np.min(hsv_array, axis=0)
+        h_max, s_max, v_max = np.max(hsv_array, axis=0)
 
-        # 91～180の範囲での平均と範囲設定
-        if h_values_91_180:
-            hsv_mean_91_180 = np.mean(h_values_91_180, axis=0).astype(int)
-            lower2 = np.clip(hsv_mean_91_180 - [h_range, s_range, v_range], [0, 0, 0], [179, 255, 255])
-            upper2 = np.clip(hsv_mean_91_180 + [h_range, s_range, v_range], [0, 0, 0], [179, 255, 255])
+        # Hを基に赤色範囲（2つのセグメント）を分割
+        if h_min <= 10:  # 赤の範囲1（0～10を含む）
+            lower1 = np.array([h_min, s_min, v_min])
+            upper1 = np.array([10, s_max, v_max])
         else:
-            lower2 = upper2 = np.array([0, 0, 0])
+            lower1 = upper1 = np.array([0, 0, 0])  # 範囲外（無効）
+
+        if h_max >= 170:  # 赤の範囲2（170～180を含む）
+            lower2 = np.array([170, s_min, v_min])
+            upper2 = np.array([h_max, s_max, v_max])
+        else:
+            lower2 = upper2 = np.array([0, 0, 0])  # 範囲外（無効）
 
         # 赤色のHSV範囲を設定
         red_hsv_range = (lower1, upper1, lower2, upper2)
@@ -56,17 +54,18 @@ def calculate_hsv_range_red():
     # クリックしたHSV値リストをクリア
     clicked_hsv_values.clear()
 
+
 def calculate_hsv_range_blue():
     global clicked_hsv_values, blue_hsv_range
     if clicked_hsv_values:
-        # 収集したHSV値の平均を計算
-        hsv_mean = np.mean(clicked_hsv_values, axis=0).astype(int)
-        
-        # 平均を中心に範囲を設定（H, S, Vのそれぞれに±5, ±30, ±30のマージンを適用）
-        lower = np.clip(hsv_mean - [h_range, s_range, v_range], [0, 0, 0], [179, 255, 255])
-        upper = np.clip(hsv_mean + [h_range, s_range, v_range], [0, 0, 0], [179, 255, 255])
-        
+        # H, S, Vそれぞれの最小値・最大値を計算
+        hsv_array = np.array(clicked_hsv_values)
+        h_min, s_min, v_min = np.min(hsv_array, axis=0)
+        h_max, s_max, v_max = np.max(hsv_array, axis=0)
+
         # 青色のHSV範囲を保存
+        lower = np.array([h_min, s_min, v_min])
+        upper = np.array([h_max, s_max, v_max])
         blue_hsv_range = (lower, upper)
         print(f"青のHSV範囲: lower={lower.tolist()}, upper={upper.tolist()}")
     else:
@@ -75,17 +74,18 @@ def calculate_hsv_range_blue():
     # クリックしたHSV値リストをクリア
     clicked_hsv_values.clear()
 
+
 def calculate_hsv_range_yellow():
     global clicked_hsv_values, yellow_hsv_range
     if clicked_hsv_values:
-        # 収集したHSV値の平均を計算
-        hsv_mean = np.mean(clicked_hsv_values, axis=0).astype(int)
-        
-        # 平均を中心に範囲を設定（H, S, Vのそれぞれに±5, ±30, ±30のマージンを適用）
-        lower = np.clip(hsv_mean - [h_range, s_range, v_range], [0, 0, 0], [179, 255, 255])
-        upper = np.clip(hsv_mean + [h_range, s_range, v_range], [0, 0, 0], [179, 255, 255])
-        
+        # H, S, Vそれぞれの最小値・最大値を計算
+        hsv_array = np.array(clicked_hsv_values)
+        h_min, s_min, v_min = np.min(hsv_array, axis=0)
+        h_max, s_max, v_max = np.max(hsv_array, axis=0)
+
         # 黄色のHSV範囲を保存
+        lower = np.array([h_min, s_min, v_min])
+        upper = np.array([h_max, s_max, v_max])
         yellow_hsv_range = (lower, upper)
         print(f"黄のHSV範囲: lower={lower.tolist()}, upper={upper.tolist()}")
     else:
@@ -93,6 +93,7 @@ def calculate_hsv_range_yellow():
     
     # クリックしたHSV値リストをクリア
     clicked_hsv_values.clear()
+
 
 def display_hsv_ranges():
     global red_hsv_range, blue_hsv_range, yellow_hsv_range
