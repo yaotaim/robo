@@ -1,4 +1,4 @@
-#停止あり
+#停止なし
 import pyrealsense2 as rs
 import cv2
 import numpy as np
@@ -9,7 +9,7 @@ import termios
 import tty
 import simpleaudio as sa
 import pigpio
-import signal
+
 
 IN1, IN2, IN3, IN4 = 17, 27, 22, 23
 ENA, ENB = 18, 13
@@ -191,20 +191,6 @@ def kote2():
     curr_time = time.time()
     prev_time = curr_time
 
-def cleanup_and_exit(signum, frame):
-    """強制終了時にクリーンアップ処理を行う"""
-    motor('stop')
-    ser.write(f"z 0 0\n".encode())
-    print(f"送信:z 0 0")
-    ser.close()
-    ser1.close()
-    wav_obj = sa.WaveObject.from_wave_file("/home/yaotai/oto/arigatou2.wav")
-    play_obj = wav_obj.play()
-    play_obj.wait_done()
-    cv2.destroyAllWindows()
-    pipeline.stop()
-    print("終了しました")
-    exit(0)
 
 ser = serial.Serial('/dev/ttyUSB1', 115200, timeout=1)
 ser1 = serial.Serial('/dev/ttyUSB0', 115200, timeout=1)
@@ -236,6 +222,7 @@ def main():
     d_r=None
     d_b=None
     d_y=None
+
     try:
         while True:
             if ser1.in_waiting > 0:
@@ -289,7 +276,7 @@ def main():
                     ser1.write(b"2")
                     waza=0
                     nigeru=None
-
+    
                 elif data =="5":#右後ろｘ
                     mode=="5"
                     motor('stop') 
@@ -392,10 +379,10 @@ def main():
                 upper_red1 = np.array([2, 163, 152])
                 lower_red2 = np.array([177, 93, 95])
                 upper_red2 = np.array([179, 153, 155])
-
+ 
                 lower_blue = np.array([104, 104, 57])
                 upper_blue = np.array([108, 164, 117])
-
+ 
                 lower_yellow = np.array([20, 140, 128])
                 upper_yellow = np.array([24, 200, 188])
 
@@ -680,7 +667,7 @@ def main():
                         if c_r[0] is not None and c_r[1] is not None and d_r is not None:#赤発見2
                             men2()
                             waza=6
-                        
+                       
                         elif c_y[0] is not None and c_y[1] is not None and d_y is not None:#黃発見2
                             kote2()
                             waza=7
@@ -837,7 +824,7 @@ def main():
                             curr_time = time.time()
                             prev_time = curr_time
                             
-          
+         
                     elif elapsed_time>mati:#時間内に色発見できなかった＝＞適当に胴    
                         print("小手３_適当")
 
@@ -940,14 +927,18 @@ def main():
                         else:
                             continue  # 認識できない入力は無視
                     break
-                    
-    except Exception as e:
-        print(f"エラーが発生しました: {e}")
-        raise
+    
+    finally:
+        motor('stop')
+        ser.write(f"z 0 0\n".encode())
+        print(f"送信:z 0 0")
+        ser.close()
+        ser1.close()
+        wav_obj = sa.WaveObject.from_wave_file("/home/yaotai/oto/arigatou2.wav")
+        play_obj = wav_obj.play()
+        play_obj.wait_done()
+        cv2.destroyAllWindows()
+        pipeline.stop()
 
 if __name__ == "__main__":
-    signal.signal(signal.SIGINT, cleanup_and_exit)
-    try:
-        main()
-    finally:
-        cleanup_and_exit(None, None)
+    main()
