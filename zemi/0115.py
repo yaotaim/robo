@@ -62,33 +62,55 @@ class HappyMove(Node):
     # 指定角度を回転する
     def rotate_angle(self, angle):
         error = 0.05  # 許容誤差 [rad]
-        # 現在の角度と目標角度の差分を計算
-        diff = angle - (self.yaw - self.yaw0)
-        diff = (diff + math.pi) % (2 * math.pi) - math.pi  # 角度を-π～πに正規化
+        diff = angle - (self.yaw - self.yaw0) #現在の角度 (self.yaw - self.yaw0) と目標角度 (angle) の差分を計算
+        diff = (diff + math.pi) % (2 * math.pi) - math.pi  #回転角が360°を超えるような場合でも、角度を-π～πに正規化
 
-        if math.fabs(diff) > error:  # 誤差が許容範囲を超える場合
-            angular_speed = 0.25 if diff > 0 else -0.25  # 回転方向を決定
+        if math.fabs(diff) > error:  #設定された許容誤差 (error = 0.05) を超える場合に回転を続行。誤差範囲内になれば停止
+            self.get_logger().info(f'Yaw: {self.yaw:.2f}, Target: {angle:.2f}, Diff: {diff:.2f}')
+            angular_speed = 0.25 if diff > 0 else -0.25  # 差分が正なら時計回り（正方向）に回転、負なら反時計回り（負方向）に回転
             self.set_vel(0.0, angular_speed)  # 回転速度を設定
             return False  # 回転中
         else:  # 許容範囲内に到達した場合
             self.set_vel(0.0, 0.0)  # 停止
             return True  # 回転完了
 
-    # 指定時間の間、指定速度で移動する
+    
+    # 指定時間の間、指定速度で移動するメソッド
     def move_time(self, time, linear_speed, angular_speed):
-        start_time = self.get_clock().now().seconds_nanoseconds()[0]  # 開始時刻を記録
+        """
+        指定時間の間、指定された直線速度と角速度でロボットを移動させます。
+        
+        Args:
+            time (float): 移動させる時間 [秒]
+            linear_speed (float): 直線速度 [m/s]
+            angular_speed (float): 角速度 [rad/s]
+        """
+        # 現在の時刻を記録（秒単位）
+        start_time = self.get_clock().now().seconds_nanoseconds()[0]  
+
+        # ノードがアクティブな間はループを実行
         while rclpy.ok():
-            current_time = self.get_clock().now().seconds_nanoseconds()[0]  # 現在時刻を取得
-            elapsed_time = current_time - start_time  # 経過時間を計算
+            # 現在時刻を取得
+            current_time = self.get_clock().now().seconds_nanoseconds()[0]
+            self.get_logger().info(f"Elapsed time: {elapsed_time:.2f}s, Linear: {linear_speed:.2f}m/s, Angular: {angular_speed:.2f}rad/s")
 
-            if elapsed_time < time:  # 指定時間内
-                self.set_vel(linear_speed, angular_speed)  # 指定速度を設定
-            else:  # 指定時間を超えたら停止
+            # 経過時間を計算
+            elapsed_time = current_time - start_time  
+
+            if elapsed_time < time:  # 指定時間内の場合
+                # 指定された直線速度と角速度を設定
+                self.set_vel(linear_speed, angular_speed)
+            else:  # 指定時間を超えた場合
+                # ロボットを停止
                 self.set_vel(0.0, 0.0)
-                break
+                break  # ループを終了
 
-            self.pub.publish(self.vel)  # 現在の速度をパブリッシュ
-            rclpy.spin_once(self)  # ノードのスピンを継続
+            # 現在の速度コマンドをパブリッシュ
+            self.pub.publish(self.vel)
+
+            # ノードのスピンを実行（ROS2の通信を維持するため）
+            rclpy.spin_once(self)
+
 
     # 正方形を描く
     def draw_square(self, x):
