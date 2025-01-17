@@ -199,16 +199,16 @@ class HappyMove(Node):
             rclpy.spin_once(self)
         self.yaw0 = self.yaw  # 基準角度を更新
 
-        # 2. 4√2 移動
-        while not self.move_distance(4.0 * math.sqrt(2)):
+        # 2. 2√2 移動
+        while not self.move_distance(2.0 * math.sqrt(2)):
             rclpy.spin_once(self)
         self.x0, self.y0 = self.x, self.y  # 開始位置を更新
 
-        # 3. 半円を描く（直径2√2の半円を右回りで描く）
-        self.draw_half_circle(2.0 * math.sqrt(2) / 2, clockwise=True)
+        # 3. 半円を描く（直径√2の半円を右回りで描く）
+        self.draw_half_circle(math.sqrt(2) / 2, clockwise=True)
 
-        # 4. 2√2 移動
-        while not self.move_distance(2.0 * math.sqrt(2)):
+        # 4. √2 移動
+        while not self.move_distance( math.sqrt(2)):
             rclpy.spin_once(self)
         self.x0, self.y0 = self.x, self.y  # 開始位置を更新
 
@@ -217,16 +217,16 @@ class HappyMove(Node):
             rclpy.spin_once(self)
         self.yaw0 = self.yaw  # 基準角度を更新
 
-        # 6. 2√2 移動
-        while not self.move_distance(2.0 * math.sqrt(2)):
+        # 6. √2 移動
+        while not self.move_distance( math.sqrt(2)):
             rclpy.spin_once(self)
         self.x0, self.y0 = self.x, self.y  # 開始位置を更新
 
-        # 7. 半円を描く（直径2√2の半円を左回りで描く）
-        self.draw_half_circle(2.0 * math.sqrt(2) / 2, clockwise=False)
+        # 7. 半円を描く（直径√2の半円を左回りで描く）
+        self.draw_half_circle(math.sqrt(2) / 2, clockwise=False)
 
-        # 8. 4√2 移動
-        while not self.move_distance(4.0 * math.sqrt(2)):
+        # 8. 2√2 移動
+        while not self.move_distance(2.0 * math.sqrt(2)):
             rclpy.spin_once(self)
         self.x0, self.y0 = self.x, self.y  # 開始位置を更新
 
