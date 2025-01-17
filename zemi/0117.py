@@ -100,7 +100,7 @@ class HappyMove(Node):
             # 経過時間を計算
             elapsed_time = current_time - start_time  
 
-            self.get_logger().info(f"Elapsed time: {elapsed_time:.2f}s, Linear: {linear_speed:.2f}m/s, Angular: {angular_speed:.2f}rad/s")
+            #self.get_logger().info(f"Elapsed time: {elapsed_time:.2f}s, Linear: {linear_speed:.2f}m/s, Angular: {angular_speed:.2f}rad/s")
 
 
             if elapsed_time < time:  # 指定時間内の場合
@@ -204,23 +204,27 @@ class HappyMove(Node):
             rclpy.spin_once(self)
         self.x0, self.y0 = self.x, self.y  # 開始位置を更新
 
-        # 3. 半円を描く（直径√2の半円を右回りで描く）
-        self.draw_half_circle(math.sqrt(2) / 2, clockwise=True)
-
-        # 4. √2 移動
-        while not self.move_distance( math.sqrt(2)):
-            rclpy.spin_once(self)
-        self.x0, self.y0 = self.x, self.y  # 開始位置を更新
-
-        # 5. 90度回転
-        while not self.rotate_angle(-math.pi / 2):
+        # 1. 45度回転
+        while not self.rotate_angle(-math.pi / 4): 
             rclpy.spin_once(self)
         self.yaw0 = self.yaw  # 基準角度を更新
 
-        # 6. √2 移動
-        while not self.move_distance( math.sqrt(2)):
+        # 3. 半円を描く（直径√2の半円を右回りで描く）
+        self.draw_half_circle(2/ 2, clockwise=True)
+
+
+        # 5. 90度回転
+        while not self.rotate_angle(-math.pi / 4):
             rclpy.spin_once(self)
-        self.x0, self.y0 = self.x, self.y  # 開始位置を更新
+        self.yaw0 = self.yaw  # 基準角度を更新
+
+        # 3. 半円を描く（直径√2の半円を右回りで描く）
+        self.draw_half_circle(2/ 2, clockwise=True)
+
+        # # 6. √2 移動
+        # while not self.move_distance( math.sqrt(2)):
+        #     rclpy.spin_once(self)
+        # self.x0, self.y0 = self.x, self.y  # 開始位置を更新
 
         # 7. 半円を描く（直径√2の半円を左回りで描く）
         self.draw_half_circle(math.sqrt(2) / 2, clockwise=False)
