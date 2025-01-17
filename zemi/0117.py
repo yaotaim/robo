@@ -213,9 +213,10 @@ class HappyMove(Node):
         self.draw_half_circle(2/ 2, clockwise=True)
 
         # 5. 180度回転
-        while not self.rotate_angle(math.pi):
+        while not self.rotate_angle(math.pi-0.00001*math.pi):
             rclpy.spin_once(self)
         self.yaw0 = self.yaw  # 基準角度を更新
+
 
         # 6. 半円を描く（直径√2の半円を右回りで描く）
         self.draw_half_circle(2/ 2, clockwise=True)
