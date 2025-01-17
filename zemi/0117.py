@@ -156,43 +156,79 @@ class HappyMove(Node):
         # 指定時間だけ動作
         self.move_time(duration, linear_speed, angular_speed)
 
-    def draw_heart(self):
-      # 1. 45度回転
-      while not self.rotate_angle(math.pi / 4): 
-          rclpy.spin_once(self)
-      self.yaw0 = self.yaw  # 基準角度を更新
+    def draw_heart_big(self):
+        # 1. 45度回転
+        while not self.rotate_angle(math.pi / 4): 
+            rclpy.spin_once(self)
+        self.yaw0 = self.yaw  # 基準角度を更新
 
-      # 2. 5√2 移動
-      while not self.move_distance(5.0 * math.sqrt(2)):
-          rclpy.spin_once(self)
-      self.x0, self.y0 = self.x, self.y  # 開始位置を更新
+        # 2. 5√2 移動
+        while not self.move_distance(5.0 * math.sqrt(2)):
+            rclpy.spin_once(self)
+        self.x0, self.y0 = self.x, self.y  # 開始位置を更新
 
-      # 3. 半円を描く（直径3√2の半円を左回りで描く）
-      self.draw_half_circle(3.0 * math.sqrt(2) / 2, clockwise=False)
+        # 3. 半円を描く（直径3√2の半円を右回りで描く）
+        self.draw_half_circle(3.0 * math.sqrt(2) / 2, clockwise=True)
 
-      # 4. 2√2 移動
-      while not self.move_distance(2.0 * math.sqrt(2)):
-          rclpy.spin_once(self)
-      self.x0, self.y0 = self.x, self.y  # 開始位置を更新
+        # 4. 2√2 移動
+        while not self.move_distance(2.0 * math.sqrt(2)):
+            rclpy.spin_once(self)
+        self.x0, self.y0 = self.x, self.y  # 開始位置を更新
 
-      # 5. 90度回転
-      while not self.rotate_angle(math.pi / 2):
-          rclpy.spin_once(self)
-      self.yaw0 = self.yaw  # 基準角度を更新
+        # 5. 90度回転
+        while not self.rotate_angle(math.pi / 2):
+            rclpy.spin_once(self)
+        self.yaw0 = self.yaw  # 基準角度を更新
 
-      # 6. 2√2 移動
-      while not self.move_distance(2.0 * math.sqrt(2)):
-          rclpy.spin_once(self)
-      self.x0, self.y0 = self.x, self.y  # 開始位置を更新
+        # 6. 2√2 移動
+        while not self.move_distance(2.0 * math.sqrt(2)):
+            rclpy.spin_once(self)
+        self.x0, self.y0 = self.x, self.y  # 開始位置を更新
 
-      # 7. 半円を描く（直径3√2の半円を右回りで描く）
-      self.draw_half_circle(3.0 * math.sqrt(2) / 2, clockwise=True)
+        # 7. 半円を描く（直径3√2の半円を左回りで描く）
+        self.draw_half_circle(3.0 * math.sqrt(2) / 2, clockwise=False)
 
-      # 8. 5√2 移動
-      while not self.move_distance(5.0 * math.sqrt(2)):
-          rclpy.spin_once(self)
-      self.x0, self.y0 = self.x, self.y  # 開始位置を更新
+        # 8. 5√2 移動
+        while not self.move_distance(5.0 * math.sqrt(2)):
+            rclpy.spin_once(self)
+        self.x0, self.y0 = self.x, self.y  # 開始位置を更新
 
+    def draw_heart_small(self):
+        # 1. 45度回転
+        while not self.rotate_angle(math.pi / 4): 
+            rclpy.spin_once(self)
+        self.yaw0 = self.yaw  # 基準角度を更新
+
+        # 2. 4√2 移動
+        while not self.move_distance(5.0 * math.sqrt(2)):
+            rclpy.spin_once(self)
+        self.x0, self.y0 = self.x, self.y  # 開始位置を更新
+
+        # 3. 半円を描く（直径2√2の半円を右回りで描く）
+        self.draw_half_circle(2.0 * math.sqrt(2) / 2, clockwise=True)
+
+        # 4. 2√2 移動
+        while not self.move_distance(2.0 * math.sqrt(2)):
+            rclpy.spin_once(self)
+        self.x0, self.y0 = self.x, self.y  # 開始位置を更新
+
+        # 5. 90度回転
+        while not self.rotate_angle(math.pi / 2):
+            rclpy.spin_once(self)
+        self.yaw0 = self.yaw  # 基準角度を更新
+
+        # 6. 2√2 移動
+        while not self.move_distance(2.0 * math.sqrt(2)):
+            rclpy.spin_once(self)
+        self.x0, self.y0 = self.x, self.y  # 開始位置を更新
+
+        # 7. 半円を描く（直径3√2の半円を左回りで描く）
+        self.draw_half_circle(2.0 * math.sqrt(2) / 2, clockwise=False)
+
+        # 8. 4√2 移動
+        while not self.move_distance(4.0 * math.sqrt(2)):
+            rclpy.spin_once(self)
+        self.x0, self.y0 = self.x, self.y  # 開始位置を更新
 
     # タイマーコールバック: 現在の速度をパブリッシュ
     def timer_callback(self):
@@ -206,7 +242,7 @@ def main(args=None):
 
     try:
         print("ハートを描きます...")
-        node.draw_heart()
+        node.draw_heart_small()
         print("正方形を描きます...")
         node.draw_square(2.0)  # 1辺が1mの正方形を描く
         print("円を描きます...")
