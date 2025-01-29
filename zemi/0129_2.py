@@ -46,22 +46,31 @@ class HappyMove(Node):
             self.set_vel(0.0, 0.0)
             return True
 
-    def rotate_angle(self, angle):  
-        error = 0.05  
-        diff = self.yaw - self.yaw0
-        diff = math.atan2(math.sin(diff), math.cos(diff))  
-        target_angle = angle
+    def rotate_angle(self, angle):
+        error = 0.05  # 許容誤差 [rad]
+        max_speed = 0.3  # 最大回転速度 [rad/s]
+        slow_speed = 0.1  # 微調整用の低速回転 [rad/s]
+    
+        target_angle = self.yaw0 + angle
+        target_angle = math.atan2(math.sin(target_angle), math.cos(target_angle))  # -pi ~ pi の範囲に正規化
+    
+        while rclpy.ok():
+            diff = target_angle - self.yaw
+            diff = math.atan2(math.sin(diff), math.cos(diff))  # -pi ~ pi に正規化
+    
+            if abs(diff) < error:  # 目標角度に到達
+                self.set_vel(0.0, 0.0)
+                return True
+    
+            # 角度の誤差に応じて回転速度を変える
+            if abs(diff) > 0.2:
+                angular_speed = max_speed
+            else:
+                angular_speed = slow_speed
+    
+            self.set_vel(0.0, angular_speed if diff > 0 else -angular_speed)
+            rclpy.spin_once(self)
 
-        angle_error = abs(target_angle - diff)
-        if angle_error > math.pi:
-            angle_error = 2 * math.pi - angle_error
-
-        if angle_error > error:
-            self.set_vel(0.0, 0.25 if target_angle > diff else -0.25)
-            return False
-        else:
-            self.set_vel(0.0, 0.0)
-            return True
      
     def move_time(self, linear_vel, angular_vel, duration):       
         self.set_vel(linear_vel, angular_vel)
