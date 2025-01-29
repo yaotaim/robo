@@ -2,52 +2,54 @@ import math
 import sys
 import time
 import rclpy
-from rclpy.node import Node
-from rclpy.executors import ExternalShutdownException
-from geometry_msgs.msg import Twist
-from nav_msgs.msg import Odometry
-from tf_transformations import euler_from_quaternion
+import tf_transformations
+from rclpy.node import Node   
+from rclpy.executors import ExternalShutdownException   
+from geometry_msgs.msg import Twist  
+from nav_msgs.msg import Odometry    
+from tf_transformations import euler_from_quaternion 
 
-class HappyMove(Node):
-    def __init__(self):
-        super().__init__('happy_move_node')
+
+class HappyMove(Node):  
+    def __init__(self):   
+        super().__init__('happy_move_node2')        
         self.pub = self.create_publisher(Twist, 'cmd_vel', 10)
-        self.sub = self.create_subscription(Odometry, 'odom', self.odom_cb, 10)
+        self.sub = self.create_subscription(Odometry, 'odom', self.odom_cb, 10)   
         self.timer = self.create_timer(0.01, self.timer_callback)
-
-        self.x, self.y, self.yaw = 0.0, 0.0, 0.0  # 現在位置
-        self.x0, self.y0, self.yaw0 = 0.0, 0.0, 0.0  # 初期位置
+        self.x, self.y, self.yaw = 0.0, 0.0, 0.0
+        self.x0, self.y0, self.yaw0 = 0.0, 0.0, 0.0
         self.vel = Twist()
         self.set_vel(0.0, 0.0)
+        self.start_time = time.time()
 
-    def get_pose(self, msg):
+    def get_pose(self, msg):      
         x = msg.pose.pose.position.x
         y = msg.pose.pose.position.y
         q = msg.pose.pose.orientation
         (_, _, yaw) = euler_from_quaternion((q.x, q.y, q.z, q.w))
         return x, y, yaw
-
-    def odom_cb(self, msg):
+  
+    def odom_cb(self, msg):        
         self.x, self.y, self.yaw = self.get_pose(msg)
-
-    def set_vel(self, linear, angular):
-        self.vel.linear.x = linear
-        self.vel.angular.z = angular
-
-    def move_distance(self, dist):
-        error = 0.01
-        diff = dist - math.sqrt((self.x - self.x0) ** 2 + (self.y - self.y0) ** 2)
+    
+    def set_vel(self, linear, angular):  
+        self.vel.linear.x = linear   
+        self.vel.angular.z = angular  
+    
+    def move_distance(self, dist):  
+        error = 0.05  
+        diff = dist - math.sqrt((self.x-self.x0)**2 + (self.y-self.y0)**2) 
         if math.fabs(diff) > error:
-            self.set_vel(0.20, 0.0)
+            self.set_vel(0.25, 0.0)
             return False
         else:
             self.set_vel(0.0, 0.0)
             return True
 
-    def rotate_angle(self, angle):
-        error = 0.05
+    def rotate_angle(self, angle):  
+        error = 0.05  
         diff = self.yaw - self.yaw0
-        diff = math.atan2(math.sin(diff), math.cos(diff))  # -π ~ π に正規化
+        diff = math.atan2(math.sin(diff), math.cos(diff))  
         target_angle = angle
 
         angle_error = abs(target_angle - diff)
@@ -60,6 +62,58 @@ class HappyMove(Node):
         else:
             self.set_vel(0.0, 0.0)
             return True
+     
+    def move_time(self, linear_vel, angular_vel, duration):       
+        self.set_vel(linear_vel, angular_vel)
+        while rclpy.ok():
+            if time.time() - self.start_time >= duration:
+                self.set_vel(0.0, 0.0)
+                return True            
+            return False        
+
+    def timer_callback(self):  
+        self.pub.publish(self.vel)  
+
+    def set_init_pos(self):
+        self.x0 = self.x
+        self.y0 = self.y
+
+    def set_init_yaw(self):
+        self.yaw0 = self.yaw
+
+    def draw_square(self, x):
+        linear_vel = 0.25
+        angular_vel = 0.3
+        for _ in range(4):
+            rclpy.spin_once(self)
+            self.set_init_pos()
+            
+            while not self.move_distance(x):
+                rclpy.spin_once(self)
+            self.set_vel(0.0, 0.0)
+            rclpy.spin_once(self)
+
+            rclpy.spin_once(self)
+            self.set_init_yaw()
+            while not self.rotate_angle(math.pi/2):
+                rclpy.spin_once(self)
+            self.set_vel(0.0, 0.0)
+            rclpy.spin_once(self)
+
+        return True
+
+    def draw_circle(self, r):
+        linear_speed = 0.25
+        angular_speed = linear_speed / r
+        duration = 0.01
+        steps = int(2 * math.pi / (angular_speed * duration))            
+        for _ in range(steps):
+            self.set_vel(linear_speed, angular_speed)
+            rclpy.spin_once(self)
+            time.sleep(0.01)               
+        self.set_vel(0.0, 0.0)
+        rclpy.spin_once(self)
+        return True            
 
     def draw_half_circle(self, r, clockwise=True):
         linear_speed = 0.2
@@ -77,61 +131,60 @@ class HappyMove(Node):
         return True
 
     def draw_heart(self):
-        # 1. 時計回りに 45 度回転
         while not self.rotate_angle(math.pi / 4):
             rclpy.spin_once(self)
         self.yaw0 = self.yaw
 
-        # 2. 2√2 移動
         while not self.move_distance(2.0 * math.sqrt(2)):
             rclpy.spin_once(self)
         self.x0, self.y0 = self.x, self.y
 
-        # 3. 反時計回りに 45 度回転
         while not self.rotate_angle(-math.pi / 4):
             rclpy.spin_once(self)
         self.yaw0 = self.yaw
 
-        # 4. 半径 1 の半円（時計回り）
         self.draw_half_circle(1, clockwise=True)
         self.yaw0 = self.yaw
         self.x0, self.y0 = self.x, self.y
 
-        # 5. 90 度回転（反時計回り）
         while not self.rotate_angle(-math.pi / 2):
             rclpy.spin_once(self)
         self.yaw0 = self.yaw
 
-        # 6. 90 度回転（反時計回り）
         while not self.rotate_angle(-math.pi / 2):
             rclpy.spin_once(self)
         self.yaw0 = self.yaw
 
-        # 7. 半径 1 の半円（時計回り）
         self.draw_half_circle(1, clockwise=True)
         self.yaw0 = self.yaw
         self.x0, self.y0 = self.x, self.y
 
-        # 8. 45 度回転（反時計回り）
         while not self.rotate_angle(-math.pi / 4):
             rclpy.spin_once(self)
         self.yaw0 = self.yaw
 
-        # 9. 2√2 移動（ゴール）
         while not self.move_distance(2.0 * math.sqrt(2)):
             rclpy.spin_once(self)
         self.x0, self.y0 = self.x, self.y
 
-    def timer_callback(self):
-        self.pub.publish(self.vel)
 
 def main(args=None):
     rclpy.init(args=args)
     node = HappyMove()
 
     try:
-        print("Drawing heart...")
-        node.draw_heart()
+        print("Select shape: 1. Square  2. Circle  3. Heart")
+        shape = input("Enter choice (1/2/3): ")
+
+        if shape == '1':
+            node.draw_square(1.0)
+        elif shape == '2':
+            node.draw_circle(1.0)
+        elif shape == '3':
+            node.draw_heart()
+        else:
+            print("Invalid input!")
+
     except KeyboardInterrupt:
         print('Ctrl+C detected, shutting down...')
     except ExternalShutdownException:
