@@ -141,19 +141,19 @@ class HappyMove(Node):  # 簡単な移動クラス
         return True            
     
     def draw_half_circle(self, r, clockwise=True):
-    linear_speed = 0.25
-    angular_speed = (linear_speed / r) * (-1 if clockwise else 1)  # 回転方向を指定
-    duration = 0.01  # 制御間隔
-    steps = int(math.pi / (angular_speed * duration))  # 半円なので π で計算
-    
-    for _ in range(steps):
-        self.set_vel(linear_speed, angular_speed)
+        linear_speed = 0.25
+        angular_speed = (linear_speed / r) * (-1 if clockwise else 1)  # 回転方向を指定
+        duration = 0.01  # 制御間隔
+        steps = int(math.pi / (angular_speed * duration))  # 半円なので π で計算
+        
+        for _ in range(steps):
+            self.set_vel(linear_speed, angular_speed)
+            rclpy.spin_once(self)
+            time.sleep(0.01)  
+        
+        self.set_vel(0.0, 0.0)  # 停止
         rclpy.spin_once(self)
-        time.sleep(0.01)  
-    
-    self.set_vel(0.0, 0.0)  # 停止
-    rclpy.spin_once(self)
-    return True
+        return True
 
     
 
