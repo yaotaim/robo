@@ -97,19 +97,45 @@ class HappyMove(Node):  # 簡単な移動クラス
                 rclpy.spin_once(self)
             self.yaw0 = self.yaw  # 次の回転の基準角度を更新
     
-    def draw_circle(self, r , clockwise=True):# 円
+    def draw_circle(self, r, clockwise=True):
         linear_speed = 0.20  # 前進速度
         angular_speed = (linear_speed / r) * (-1 if clockwise else 1)  # 角速度
-        circumference = 2 * math.pi * r  # 円周の長さ
-        duration = circumference / linear_speed  # 円を描くのに必要な時間
-        self.move_time(duration, linear_speed, angular_speed) 
+        target_angle = self.yaw + (2 * math.pi) * (-1 if clockwise else 1)  # 360度回転の目標角度
+        
+        self.yaw0 = self.yaw  # 基準角度をセット
+        
+        while True:
+            diff = target_angle - self.yaw
+            diff = math.atan2(math.sin(diff), math.cos(diff))  # -π ~ π に正規化
+            
+            if abs(diff) < 0.05:  # 誤差が小さければ終了
+                break
+            
+            self.set_vel(linear_speed, angular_speed)  # 速度指令
+            rclpy.spin_once(self)  # オドメトリ更新
     
-    def draw_half_circle(self, r, clockwise=True):#半円の半径,時計回りTrue、反時計回りFalse
-        linear_speed = 0.2  # 前進速度
+        self.set_vel(0.0, 0.0)  # 停止
+    
+    
+    def draw_half_circle(self, r, clockwise=True):
+        linear_speed = 0.20  # 前進速度
         angular_speed = (linear_speed / r) * (-1 if clockwise else 1)  # 角速度
-        circumference = math.pi * r  # 半円の周長
-        duration = circumference / linear_speed  # 半円を描く時間
-        self.move_time(duration, linear_speed, angular_speed)
+        target_angle = self.yaw + (math.pi) * (-1 if clockwise else 1)  # 180度回転の目標角度
+        
+        self.yaw0 = self.yaw  # 基準角度をセット
+        
+        while True:
+            diff = target_angle - self.yaw
+            diff = math.atan2(math.sin(diff), math.cos(diff))  # -π ~ π に正規化
+            
+            if abs(diff) < 0.05:  # 誤差が小さければ終了
+                break
+            
+            self.set_vel(linear_speed, angular_speed)  # 速度指令
+            rclpy.spin_once(self)  # オドメトリ更新
+    
+        self.set_vel(0.0, 0.0)  # 停止
+    
 
     def draw_heart_small(self):
         #1.時計45度回転
