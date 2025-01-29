@@ -140,41 +140,50 @@ class HappyMove(Node):
         return True
 
     def draw_heart(self):
+        # Start by rotating the robot to the right angle
         while not self.rotate_angle(math.pi / 4):
             rclpy.spin_once(self)
-        self.yaw0 = self.yaw
-
-        while not self.move_distance(2.0 * math.sqrt(2)):
+        self.yaw0 = self.yaw  # Set the initial yaw position
+    
+        # Move the robot along the diagonal of the heart shape
+        self.set_init_pos()  # Store the initial position
+        while not self.move_distance(2.0 * math.sqrt(2)):  # Move distance for diagonal line
             rclpy.spin_once(self)
-        self.x0, self.y0 = self.x, self.y
-
-        while not self.rotate_angle(-math.pi / 4):
+        self.x0, self.y0 = self.x, self.y  # Update the current position
+    
+        # Rotate the robot to form the heart's curve
+        while not self.rotate_angle(-math.pi / 4):  # Rotate to the next position
             rclpy.spin_once(self)
-        self.yaw0 = self.yaw
-
+        self.yaw0 = self.yaw  # Set the new yaw position
+    
+        # Draw the first half-circle of the heart
         self.draw_half_circle(1, clockwise=True)
         self.yaw0 = self.yaw
         self.x0, self.y0 = self.x, self.y
-
+    
+        # Rotate the robot to the next position to complete the second half-circle
         while not self.rotate_angle(-math.pi / 2):
             rclpy.spin_once(self)
-        self.yaw0 = self.yaw
-
-        while not self.rotate_angle(-math.pi / 2):
-            rclpy.spin_once(self)
-        self.yaw0 = self.yaw
-
+        self.yaw0 = self.yaw  # Update yaw position
+    
+        # Draw the second half-circle of the heart
         self.draw_half_circle(1, clockwise=True)
         self.yaw0 = self.yaw
         self.x0, self.y0 = self.x, self.y
-
-        while not self.rotate_angle(-math.pi / 4):
+    
+        # Complete the remaining diagonal move
+        while not self.rotate_angle(-math.pi / 4):  # Final rotation to complete the heart
             rclpy.spin_once(self)
         self.yaw0 = self.yaw
-
-        while not self.move_distance(2.0 * math.sqrt(2)):
+    
+        self.set_init_pos()  # Set initial position again
+        while not self.move_distance(2.0 * math.sqrt(2)):  # Move along the final diagonal
             rclpy.spin_once(self)
-        self.x0, self.y0 = self.x, self.y
+        self.x0, self.y0 = self.x, self.y  # Update position at the end
+    
+        return True
+    
+         
 
 
 def main(args=None):
