@@ -65,11 +65,13 @@ class HappyMove(Node):
      
     def move_time(self, linear_vel, angular_vel, duration):       
         self.set_vel(linear_vel, angular_vel)
+        start_time = time.time()  # 移動を開始した時刻を記録
         while rclpy.ok():
-            if time.time() - self.start_time >= duration:
+            if time.time() - start_time >= duration:
                 self.set_vel(0.0, 0.0)
-                return True            
-            return False        
+                return True
+            rclpy.spin_once(self)  # 定期的にコールバックを処理
+        return False        
 
     def timer_callback(self):  
         self.pub.publish(self.vel)  
@@ -108,22 +110,24 @@ class HappyMove(Node):
         circumference = 2 * math.pi * r  # 円周の長さ
         duration = circumference / linear_speed  # 円を描くのに必要な時間 [秒]
 
-        self.move_time(duration, linear_speed, angular_speed)  # 円軌道を維持          
-
+        if not self.move_time(linear_speed, angular_speed, duration):  # 円を描く処理
+            self.get_logger().error("Failed to move in a circle.")
+          
     def draw_half_circle(self, r, clockwise=True):
         linear_speed = 0.25  # 前進速度 [m/s]
         angular_speed = linear_speed / r  # 円軌道を保つ角速度 [rad/s]
-        circumference = math.pi * r  # 円周の長さ
-        duration = circumference / linear_speed  # 円を描くのに必要な時間 [秒]
+        circumference = math.pi * r  # 半円周の長さ
+        duration = circumference / linear_speed  # 半円を描くのに必要な時間 [秒]
 
-        self.move_time(duration, linear_speed, angular_speed)  # 円軌道を維持          
+        if not self.move_time(linear_speed, angular_speed, duration):  # 半円を描く処理
+            self.get_logger().error("Failed to move in a half circle.")          
 
     def draw_heart(self):
         while not self.rotate_angle(math.pi / 4):
             rclpy.spin_once(self)
         self.yaw0 = self.yaw
 
-        while not self.move_distance( math.sqrt(2)):
+        while not self.move_distance(math.sqrt(2)):
             rclpy.spin_once(self)
         self.x0, self.y0 = self.x, self.y
 
@@ -138,10 +142,6 @@ class HappyMove(Node):
         while not self.rotate_angle(-math.pi):
             rclpy.spin_once(self)
         self.yaw0 = self.yaw
-
-        # while not self.rotate_angle(-math.pi / 2):
-        #     rclpy.spin_once(self)
-        # self.yaw0 = self.yaw
 
         self.draw_half_circle(0.5, clockwise=True)
         self.yaw0 = self.yaw
