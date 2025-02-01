@@ -105,15 +105,25 @@ class HappyMove(Node):
     def draw_circle(self, r):
         linear_speed = 0.25
         angular_speed = linear_speed / r
-        duration = 0.01
-        steps = int(2 * math.pi / (angular_speed * duration))            
-        for _ in range(steps):
-            self.set_vel(linear_speed, angular_speed)
+        error = 0.05  # 誤差許容範囲
+    
+        # 初期角度を保存
+        start_yaw = self.yaw
+        current_angle = 0.0  
+    
+        self.set_vel(linear_speed, angular_speed)
+    
+        while abs(current_angle) < (2 * math.pi - error):  # ほぼ一周するまで
             rclpy.spin_once(self)
-            time.sleep(0.01)               
+            time.sleep(0.01)  # 小さな時間間隔で更新
+            diff = self.yaw - start_yaw
+            current_angle = math.atan2(math.sin(diff), math.cos(diff))  # 角度の正規化
+    
+        # 停止
         self.set_vel(0.0, 0.0)
         rclpy.spin_once(self)
-        return True            
+        return True
+           
 
     def draw_half_circle(self, r, clockwise=True):
         linear_speed = 0.25
