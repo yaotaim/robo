@@ -55,14 +55,13 @@ class HappyMove(Node):  # 簡単な移動クラス
         error = 0.05  
         diff = self.yaw - self.yaw0
         diff = math.atan2(math.sin(diff), math.cos(diff))  
-        target_angle = angle
 
-        angle_error = abs(target_angle - diff)
-        if angle_error > math.pi:
-            angle_error = 2 * math.pi - angle_error
+        moku_angle = abs(angle - diff)
+        if moku_angle > math.pi:
+            moku_angle = 2 * math.pi - moku_angle
 
-        if angle_error > error:
-            self.set_vel(0.0, 0.25 if target_angle > diff else -0.25)
+        if moku_angle > error:
+            self.set_vel(0.0, 0.25 if angle > diff else -0.25)
             return False
         else:
             self.set_vel(0.0, 0.0)
@@ -76,22 +75,16 @@ class HappyMove(Node):  # 簡単な移動クラス
                 return True            
             return False        
 
-    def timer_callback(self):  
-        self.pub.publish(self.vel)  
-
-    def set_init_pos(self):
-        self.x0 = self.x
-        self.y0 = self.y
-
-    def set_init_yaw(self):
-        self.yaw0 = self.yaw
+    def timer_callback(self):  # タイマーのコールバック関数
+        self.pub.publish(self.vel)  # 速度指令メッセージのパブリッシュ 
 
     def draw_square(self, x):
         linear_vel = 0.25
         angular_vel = 0.3
         for _ in range(4):
             rclpy.spin_once(self)
-            self.set_init_pos()
+            self.x0 = self.x
+            self.y0 = self.y
             
             while not self.move_distance(x):
                 rclpy.spin_once(self)
@@ -99,7 +92,7 @@ class HappyMove(Node):  # 簡単な移動クラス
             rclpy.spin_once(self)
 
             rclpy.spin_once(self)
-            self.set_init_yaw()
+            self.yaw0 = self.yaw
             while not self.rotate_angle(math.pi/2):
                 rclpy.spin_once(self)
             self.set_vel(0.0, 0.0)
