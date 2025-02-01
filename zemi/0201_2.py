@@ -79,9 +79,7 @@ class HappyMove(Node):  # 簡単な移動クラス
         self.pub.publish(self.vel)  # 速度指令メッセージのパブリッシュ 
 
     def draw_square(self, x):
-        linear_vel = 0.25
-        angular_vel = 0.3
-        for _ in range(4):
+        for i in range(4):
             rclpy.spin_once(self)
             self.x0 = self.x
             self.y0 = self.y
