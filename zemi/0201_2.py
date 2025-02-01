@@ -146,6 +146,7 @@ class HappyMove(Node):  # 簡単な移動クラス
         self.x0, self.y0 = self.x, self.y
 
         self.set_vel(0.0, 0.0)
+        rclpy.spin_once(self)
         return True   
     
 def main(args=None):
