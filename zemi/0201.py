@@ -1,43 +1,48 @@
 import math
 import sys
-import time
 import rclpy
 import tf_transformations
 from rclpy.node import Node   
 from rclpy.executors import ExternalShutdownException   
-from geometry_msgs.msg import Twist  
-from nav_msgs.msg import Odometry    
+from geometry_msgs.msg import Twist  # Twistメッセージ型をインポート
+from nav_msgs.msg import Odometry    # Odometryメッセージ型をインポート 
 from tf_transformations import euler_from_quaternion 
+import time
 
-
-class HappyMove(Node):  
-    def __init__(self):   
-        super().__init__('happy_move_node2')        
+class HappyMove(Node):  # 簡単な移動クラス
+    def __init__(self):   # コンストラクタ
+        super().__init__('happy_move_node')        
         self.pub = self.create_publisher(Twist, 'cmd_vel', 10)
         self.sub = self.create_subscription(Odometry, 'odom', self.odom_cb, 10)   
         self.timer = self.create_timer(0.01, self.timer_callback)
         self.x, self.y, self.yaw = 0.0, 0.0, 0.0
         self.x0, self.y0, self.yaw0 = 0.0, 0.0, 0.0
-        self.vel = Twist()
-        self.set_vel(0.0, 0.0)
-        self.start_time = time.time()
+        self.vel = Twist()  # Twist メッセージ型インスタンスの生成
+        self.set_vel(0.0, 0.0)  # 速度の初期化
+        self.s_time = time.time()
 
-    def get_pose(self, msg):      
+    def get_pose(self, msg):      # 姿勢を取得する
         x = msg.pose.pose.position.x
         y = msg.pose.pose.position.y
-        q = msg.pose.pose.orientation
-        (_, _, yaw) = euler_from_quaternion((q.x, q.y, q.z, q.w))
+        q_x = msg.pose.pose.orientation.x
+        q_y = msg.pose.pose.orientation.y
+        q_z = msg.pose.pose.orientation.z
+        q_w = msg.pose.pose.orientation.w
+        (roll, pitch, yaw) = tf_transformations.euler_from_quaternion(
+            (q_x, q_y, q_z, q_w))
         return x, y, yaw
   
-    def odom_cb(self, msg):        
+    def odom_cb(self, msg):         # オドメトリのコールバック関数
         self.x, self.y, self.yaw = self.get_pose(msg)
+        self.get_logger().info(
+            f'x={self.x: .2f} y={self.y: .2f}[m] yaw={self.yaw: .2f}[rad/s]')     
     
-    def set_vel(self, linear, angular):  
-        self.vel.linear.x = linear   
-        self.vel.angular.z = angular  
+    def set_vel(self, linear, angular):  # 速度を設定する
+        self.vel.linear.x = linear   # [m/s]
+        self.vel.angular.z = angular  # [rad/s]  
     
-    def move_distance(self, dist):  
-        error = 0.05  
+    def move_distance(self, dist):  # 指定した距離distを移動する
+        error = 0.05  # 許容誤差 [m] 
         diff = dist - math.sqrt((self.x-self.x0)**2 + (self.y-self.y0)**2) 
         if math.fabs(diff) > error:
             self.set_vel(0.25, 0.0)
@@ -66,7 +71,7 @@ class HappyMove(Node):
     def move_time(self, linear_vel, angular_vel, duration):       
         self.set_vel(linear_vel, angular_vel)
         while rclpy.ok():
-            if time.time() - self.start_time >= duration:
+            if time.time() - self.s_time >= duration:
                 self.set_vel(0.0, 0.0)
                 return True            
             return False        
@@ -122,30 +127,36 @@ class HappyMove(Node):
         # 停止
         self.set_vel(0.0, 0.0)
         rclpy.spin_once(self)
-        return True
-           
+        return True     
 
     def draw_half_circle(self, r, clockwise=True):
         linear_speed = 0.25
-        angular_speed = (linear_speed / r) * (-1 if clockwise else 1)
-        duration = 0.01
-        steps = int((math.pi * r) / (linear_speed * duration))
-
-        for _ in range(steps):
-            self.set_vel(linear_speed, angular_speed)
+        angular_speed = linear_speed / r
+        error = 0.05  # 誤差許容範囲
+    
+        # 初期角度を保存
+        start_yaw = self.yaw
+        current_angle = 0.0  
+    
+        self.set_vel(linear_speed, angular_speed)
+    
+        while abs(current_angle) < ( math.pi - error):  # ほぼ一周するまで
             rclpy.spin_once(self)
-            time.sleep(duration)
-
+            time.sleep(0.01)  # 小さな時間間隔で更新
+            diff = self.yaw - start_yaw
+            current_angle = math.atan2(math.sin(diff), math.cos(diff))  # 角度の正規化
+    
+        # 停止
         self.set_vel(0.0, 0.0)
         rclpy.spin_once(self)
-        return True
+        return True     
 
     def draw_heart(self):
         self.draw_half_circle(0.5, clockwise=True)
         self.yaw0 = self.yaw
         self.x0, self.y0 = self.x, self.y
 
-        while not self.rotate_angle(-math.pi / 4):
+        while not self.rotate_angle(math.pi / 4):
             rclpy.spin_once(self)
         self.yaw0 = self.yaw
 
@@ -153,7 +164,7 @@ class HappyMove(Node):
             rclpy.spin_once(self)
         self.x0, self.y0 = self.x, self.y
 
-        while not self.rotate_angle(-math.pi / 2):
+        while not self.rotate_angle(math.pi / 2):
             rclpy.spin_once(self)
         self.yaw0 = self.yaw
 
@@ -161,7 +172,7 @@ class HappyMove(Node):
             rclpy.spin_once(self)
         self.x0, self.y0 = self.x, self.y
 
-        while not self.rotate_angle(-math.pi / 4):
+        while not self.rotate_angle(math.pi / 4):
             rclpy.spin_once(self)
         self.yaw0 = self.yaw
 
@@ -183,7 +194,7 @@ def main(args=None):
         if shape == '1':
             node.draw_square(1.0)
         elif shape == '2':
-            node.draw_circle(1.0)
+            node.draw_circle(0.5)
         elif shape == '3':
             node.draw_heart()
         elif shape == '4':
