@@ -53,15 +53,19 @@ segments, info = model.transcribe("output.wav", beam_size=5)
 
 print("Detected language '%s' with probability %f" % (info.language, info.language_probability))
 
-c_text=''
-for segment in segments:
-    #print("[%.2fs -> %.2fs] %s" % (segment.start, segment.end, segment.text))
-    print(segment.text)
-    c_text+=segment.text
-
-if 'よろしく'or'宜しく' in c_text:
-    print('zun(ヨロシクオネガイシマス)')
-    playsound("zun1.wav")
+if info.language not in ["ja","en"]:
+    print("なにご？")
+    
 else:
-    print('zun(ナンテイッタ？)')
-    playsound("zun2.wav")
+    c_text=''
+    for segment in segments:
+        #print("[%.2fs -> %.2fs] %s" % (segment.start, segment.end, segment.text))
+        print(segment.text)
+        c_text+=segment.text
+
+    if 'よろしく' in c_text or '宜しく' in c_text:
+        print('zun(ヨロシクオネガイシマス)')
+        playsound("zun1.wav")
+    else:
+        print('zun(ナンテイッタ？)')
+        playsound("zun2.wav")
