@@ -1,8 +1,8 @@
 import pyaudio
 import wave
+import numpy as np
 from faster_whisper import WhisperModel
 from playsound import playsound
-import numpy as np
 
 # 録音の設定
 FORMAT = pyaudio.paInt16
@@ -13,14 +13,12 @@ SILENCE_THRESHOLD = 600  # 無音のしきい値(音量)
 SILENCE_DURATION = 20  # 無音と判定する持続時間(フレーム数)
 
 # 音声を録音する関数
-def record_audio():
+def record_audio(output_file="output.wav"):
     audio = pyaudio.PyAudio()
-
     stream = audio.open(format=FORMAT, channels=CHANNELS, rate=RATE,
                         input=True, frames_per_buffer=CHUNK)
 
     print("Recording started...")
-
     frames = []
     silence_frames = 0
     recording = False
@@ -49,44 +47,32 @@ def record_audio():
     audio.terminate()
 
     # 録音結果を保存
-    wf = wave.open("output.wav", 'wb')
+    wf = wave.open(output_file, 'wb')
     wf.setnchannels(CHANNELS)
     wf.setsampwidth(audio.get_sample_size(FORMAT))
     wf.setframerate(RATE)
     wf.writeframes(b''.join(frames))
     wf.close()
 
-    print("Recording finished and saved as 'output.wav'")
+    print(f"Recording finished and saved as '{output_file}'")
+    return output_file
 
-if __name__ == "__main__":
-    record_audio()
+# Whisper で音声をテキストに変換し、特定の単語を判定
+def transcribe_and_respond(audio_file):
+    model_size = "small"  # tiny, base, small, medium, large
+    model = WhisperModel(model_size, device="cpu", compute_type="int8")
 
-# 録音データを WAV ファイルに保存
-output_file = "output.wav"
-with wave.open(output_file, 'wb') as wf:
-    wf.setnchannels(channels)
-    wf.setsampwidth(p.get_sample_size(pyaudio.paInt16))
-    wf.setframerate(fs)
-    wf.writeframes(b''.join(frames))
+    segments, info = model.transcribe(audio_file, beam_size=5)
+    print("Detected language '%s' with probability %f" % (info.language, info.language_probability))
 
-print(f"音声を {output_file} に保存しました。")
+    if info.language not in ["ja", "en"]:
+        print("なにご？")
+        return
 
-model_size = "small"#tiny base small medium (large)
-model = WhisperModel(model_size, device="cpu", compute_type="int8")
-
-segments, info = model.transcribe("output.wav", beam_size=5)
-
-print("Detected language '%s' with probability %f" % (info.language, info.language_probability))
-
-if info.language not in ["ja","en"]:
-    print("なにご？")
-    
-else:
-    c_text=''
+    c_text = ''
     for segment in segments:
-        #print("[%.2fs -> %.2fs] %s" % (segment.start, segment.end, segment.text))
         print(segment.text)
-        c_text+=segment.text
+        c_text += segment.text
 
     if 'よろしく' in c_text or '宜しく' in c_text:
         print('zun(ヨロシクオネガイシマス)')
@@ -94,3 +80,7 @@ else:
     else:
         print('zun(ナンテイッタ？)')
         playsound("zun2.wav")
+
+if __name__ == "__main__":
+    audio_file = record_audio()
+    transcribe_and_respond(audio_file)
