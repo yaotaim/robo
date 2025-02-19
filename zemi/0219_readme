@@ -28,3 +28,5 @@ Archive:  voicevox_engine-linux-x64.zip
   the last disk(s) of this archive.
 unzip:  cannot find zipfile directory in one of voicevox_engine-linux-x64.zip or
         voicevox_engine-linux-x64.zip.zip, and cannot find voicevox_engine-linux-x64.zip.ZIP, period.
+
+curl -s https://api.github.com/repos/VOICEVOX/voicevox_engine/releases/latest | grep browser_download_url
