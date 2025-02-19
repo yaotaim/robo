@@ -1,0 +1,15 @@
+# 依存パッケージのインストール
+sudo apt update
+sudo apt install -y unzip curl libsndfile1
+
+# VOICEVOXエンジンのダウンロード
+curl -LO https://github.com/VOICEVOX/voicevox_engine/releases/latest/download/voicevox_engine-linux-x64.zip
+
+# 解凍
+unzip voicevox_engine-linux-x64.zip
+
+# 実行権限を付与
+chmod +x voicevox_engine
+
+# エンジンを起動
+./voicevox_engine
