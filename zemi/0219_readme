@@ -74,3 +74,117 @@ tanaka     テンプレート                             ピクチャ
 b3_3@sirius-NUC13ANHi5:~$ cd voicevox_engine-linux-cpu-0.22.2
 bash: cd: voicevox_engine-linux-cpu-0.22.2: そのようなファイルやディレクトリはありません
 
+
+b3_3@sirius-NUC13ANHi5:~$ wget -c https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-cpu-0.22.2.7z.001
+--2025-02-19 11:48:05--  https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-cpu-0.22.2.7z.001
+github.com (github.com) をDNSに問いあわせています... 20.27.177.113
+github.com (github.com)|20.27.177.113|:443 に接続しています... 接続しました。
+HTTP による接続要求を送信しました、応答を待っています... 302 Found
+場所: https://objects.githubusercontent.com/github-production-release-asset-2e65be/389985077/50816308-9c6a-474d-be3d-db17713e6e36?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=releaseassetproduction%2F20250219%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250219T024805Z&X-Amz-Expires=300&X-Amz-Signature=9c371528447e61c5445003adce0eeb574856225c85611e3162b9fd32d95fa19d&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3Dvoicevox_engine-linux-cpu-0.22.2.7z.001&response-content-type=application%2Foctet-stream [続く]
+--2025-02-19 11:48:05--  https://objects.githubusercontent.com/github-production-release-asset-2e65be/389985077/50816308-9c6a-474d-be3d-db17713e6e36?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=releaseassetproduction%2F20250219%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250219T024805Z&X-Amz-Expires=300&X-Amz-Signature=9c371528447e61c5445003adce0eeb574856225c85611e3162b9fd32d95fa19d&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3Dvoicevox_engine-linux-cpu-0.22.2.7z.001&response-content-type=application%2Foctet-stream
+objects.githubusercontent.com (objects.githubusercontent.com) をDNSに問いあわせています... 185.199.109.133, 185.199.110.133, 185.199.111.133, ...
+objects.githubusercontent.com (objects.githubusercontent.com)|185.199.109.133|:443 に接続しています... 接続しました。
+HTTP による接続要求を送信しました、応答を待っています... 200 OK
+長さ: 1432577821 (1.3G) [application/octet-stream]
+‘voicevox_engine-linux-cpu-0.22.2.7z.001’ に保存中
+
+voicevox_engine-lin 100%[===================>]   1.33G  12.5MB/s    in 1m 54s  
+
+2025-02-19 11:49:59 (12.0 MB/s) - ‘voicevox_engine-linux-cpu-0.22.2.7z.001’ へ保存完了 [1432577821/1432577821]
+
+b3_3@sirius-NUC13ANHi5:~$ sudo apt update
+[sudo] b3_3 のパスワード: 
+ヒット:1 https://packages.microsoft.com/repos/code stable InRelease
+ヒット:2 https://dl.google.com/linux/chrome/deb stable InRelease               
+ヒット:3 http://packages.ros.org/ros2/ubuntu jammy InRelease                   
+ヒット:4 http://security.ubuntu.com/ubuntu jammy-security InRelease            
+ヒット:5 http://jp.archive.ubuntu.com/ubuntu jammy InRelease                   
+ヒット:6 http://jp.archive.ubuntu.com/ubuntu jammy-updates InRelease
+ヒット:7 http://jp.archive.ubuntu.com/ubuntu jammy-backports InRelease
+パッケージリストを読み込んでいます... 完了
+依存関係ツリーを作成しています... 完了
+状態情報を読み取っています... 完了        
+アップグレードできるパッケージが 537 個あります。表示するには 'apt list --upgradable' を実行してください。
+b3_3@sirius-NUC13ANHi5:~$ sudo apt install -y p7zip-full
+パッケージリストを読み込んでいます... 完了
+依存関係ツリーを作成しています... 完了        
+状態情報を読み取っています... 完了        
+提案パッケージ:
+  p7zip-rar
+以下のパッケージが新たにインストールされます:
+  p7zip-full
+アップグレード: 0 個、新規インストール: 1 個、削除: 0 個、保留: 537 個。
+1,186 kB のアーカイブを取得する必要があります。
+この操作後に追加で 4,833 kB のディスク容量が消費されます。
+取得:1 http://jp.archive.ubuntu.com/ubuntu jammy/universe amd64 p7zip-full amd64 16.02+dfsg-8 [1,186 kB]
+1,186 kB を 3秒 で取得しました (459 kB/s)
+以前に未選択のパッケージ p7zip-full を選択しています。
+(データベースを読み込んでいます ... 現在 325242 個のファイルとディレクトリがイン
+ストールされています。)
+.../p7zip-full_16.02+dfsg-8_amd64.deb を展開する準備をしています ...
+p7zip-full (16.02+dfsg-8) を展開しています...
+p7zip-full (16.02+dfsg-8) を設定しています ...
+man-db (2.10.2-1) のトリガを処理しています ...
+b3_3@sirius-NUC13ANHi5:~$ 7z x voicevox_engine-linux-cpu-0.22.2.7z.001
+
+7-Zip [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
+p7zip Version 16.02 (locale=ja_JP.UTF-8,Utf16=on,HugeFiles=on,64 bits,16 CPUs 13th Gen Intel(R) Core(TM) i5-1340P (B06A2),ASM,AES-NI)
+
+Scanning the drive for archives:
+1 file, 1432577821 bytes (1367 MiB)
+
+Extracting archive: voicevox_engine-linux-cpu-0.22.2.7z.001
+--         
+Path = voicevox_engine-linux-cpu-0.22.2.7z.001
+Type = Split
+Physical Size = 1432577821
+Volumes = 1
+Total Physical Size = 1432577821
+----
+Path = voicevox_engine-linux-cpu-0.22.2.7z
+Size = 1432577821
+--
+Path = voicevox_engine-linux-cpu-0.22.2.7z
+Type = 7z
+Physical Size = 1432577821
+Headers Size = 10945
+Method = Delta LZMA2:24 BCJ
+Solid = +
+Blocks = 4
+
+Everything is Ok                                                               
+
+Folders: 134
+Files: 1086
+Size:       1841658254
+Compressed: 1432577821
+b3_3@sirius-NUC13ANHi5:~$ ls
+linux-cpu  voicevox_engine-linux-cpu-0.22.2.7z.001  デスクトップ  ミュージック
+run.bash   voicevox_engine-linux-x64.zip            ドキュメント  公開
+snap       ダウンロード                             ビデオ
+tanaka     テンプレート                             ピクチャ
+b3_3@sirius-NUC13ANHi5:~$ cd voicevox_engine-linux-cpu-0.22.2
+bash: cd: voicevox_engine-linux-cpu-0.22.2: そのようなファイルやディレクトリはありません
+b3_3@sirius-NUC13ANHi5:~$ b3_3@sirius-NUC13ANHi5:~$ ls
+linux-cpu  voicevox_engine-linux-cpu-0.22.2.7z.001  デスクトップ  ミュージック
+run.bash   voicevox_engine-linux-x64.zip            ドキュメント  公開
+snap       ダウンロード                             ビデオ
+tanaka     テンプレート                             ピクチャ
+b3_3@sirius-NUC13ANHi5:~$ cd voicevox_engine-linux-cpu-0.22.2
+bash: cd: voicevox_engine-linux-cpu-0.22.2: そのようなファイルやディレクトリはありません
+b3_3@sirius-NUC13ANHi5:~$ ls
+linux-cpu  voicevox_engine-linux-cpu-0.22.2.7z.001  デスクトップ  ミュージック
+run.bash   voicevox_engine-linux-x64.zip            ドキュメント  公開
+snap       ダウンロード                             ビデオ
+tanaka     テンプレート                             ピクチャ
+b3_3@sirius-NUC13ANHi5:~$ cd voicevox_engine-linux-cpu-0.22.2
+bash: cd: voicevox_engine-linux-cpu-0.22.2: そのようなファイルやディレクトリはありません
+b3_3@sirius-NUC13ANHi5:~$ wget -c https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-cpu-0.22.2.7z.001
+--2025-02-19 11:48:05--  https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-cpu-0.22.2.7z.001
+github.com (github.com) をDNSに問いあわせています... 20.27.177.113
+github.com (github.com)|20.27.177.113|:443 に接続しています... 接続しました。
+HTTP による接続要求を送信しました、応答を待っています... 302 Found
+場所: https://objects.githubusercontent.com/github-production-release-asset-2e65be/389985077/50816308-9c6a-474d-be3d-db17713e6e36?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=releaseassetproduction%2F20250219%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250219T024805Z&X-Amz-Expires=300&X-Amz-Signature=9c371528447e61c5445003adce0eeb574856225c85611e3162b9fd32d95fa19d&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3Dvoicevox_engine-linux-cpu-りません: voicevox_engine-linux-cpu-0.22.2: そのようなファイルやディレクトリはあ
+
+
+
