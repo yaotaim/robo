@@ -13,3 +13,18 @@ chmod +x voicevox_engine
 
 # エンジンを起動
 ./voicevox_engine
+
+
+b3_3@sirius-NUC13ANHi5:~$ curl -LO https://github.com/VOICEVOX/voicevox_engine/releases/latest/download/voicevox_engine-linux-x64.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100     9  100     9    0     0     13      0 --:--:-- --:--:-- --:--:--     0
+b3_3@sirius-NUC13ANHi5:~$ unzip voicevox_engine-linux-x64.zip
+Archive:  voicevox_engine-linux-x64.zip
+  End-of-central-directory signature not found.  Either this file is not
+  a zipfile, or it constitutes one disk of a multi-part archive.  In the
+  latter case the central directory and zipfile comment will be found on
+  the last disk(s) of this archive.
+unzip:  cannot find zipfile directory in one of voicevox_engine-linux-x64.zip or
+        voicevox_engine-linux-x64.zip.zip, and cannot find voicevox_engine-linux-x64.zip.ZIP, period.
