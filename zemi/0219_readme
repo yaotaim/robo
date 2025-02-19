@@ -30,3 +30,37 @@ unzip:  cannot find zipfile directory in one of voicevox_engine-linux-x64.zip or
         voicevox_engine-linux-x64.zip.zip, and cannot find voicevox_engine-linux-x64.zip.ZIP, period.
 
 curl -s https://api.github.com/repos/VOICEVOX/voicevox_engine/releases/latest | grep browser_download_url
+
+b3_3@sirius-NUC13ANHi5:~$ curl -s curl -s https://api.github.com/repos/VOICEVOX/voicevox_engine/releases/latest | grep browser_download_url
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-cpu-0.22.2.7z.001"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-cpu-0.22.2.7z.txt"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-cpu-0.22.2.vvpp"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-cpu-0.22.2.vvpp.txt"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-nvidia-0.22.2.001.vvppp"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-nvidia-0.22.2.002.vvppp"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-nvidia-0.22.2.7z.001"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-nvidia-0.22.2.7z.002"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-nvidia-0.22.2.7z.txt"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-nvidia-0.22.2.vvpp.txt"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-macos-arm64-0.22.2.7z.001"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-macos-arm64-0.22.2.7z.txt"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-macos-arm64-0.22.2.vvpp"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-macos-arm64-0.22.2.vvpp.txt"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-macos-x64-0.22.2.7z.001"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-macos-x64-0.22.2.7z.txt"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-macos-x64-0.22.2.vvpp"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-macos-x64-0.22.2.vvpp.txt"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-windows-cpu-0.22.2.7z.001"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-windows-cpu-0.22.2.7z.txt"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-windows-cpu-0.22.2.vvpp"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-windows-cpu-0.22.2.vvpp.txt"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-windows-directml-0.22.2.7z.001"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-windows-directml-0.22.2.7z.txt"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-windows-directml-0.22.2.vvpp"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-windows-directml-0.22.2.vvpp.txt"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-windows-nvidia-0.22.2.001.vvppp"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-windows-nvidia-0.22.2.002.vvppp"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-windows-nvidia-0.22.2.7z.001"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-windows-nvidia-0.22.2.7z.002"
+      "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-windows-nvidia-0.22.2.7z.txt"
+
