@@ -1,47 +1,64 @@
+from threading import Lock
 import requests
-import sounddevice as sd
-import numpy as np
+from playsound import playsound
 import wave
+import pyaudio
+import time
+import urllib.parse
+import os
 
-VOICEVOX_URL = "http://127.0.0.1:50021"
+def playwav(file):
+    # wavファイルの読み込み
+    with wave.open(file, 'rb') as f:
+        # PyAudioのインスタンスを生成
+        p = pyaudio.PyAudio()
 
-def synthesize_speech(text, speaker=3):
-    """VOICEVOXを使って音声合成する"""
-    params = {"text": text, "speaker": speaker}
-    response = requests.post(f"{VOICEVOX_URL}/audio_query", params=params)
-    if response.status_code != 200:
-        print("音声クエリの作成に失敗しました")
-        return None
+        # Streamを開く
+        stream = p.open(format=p.get_format_from_width(f.getsampwidth()),
+                        channels=f.getnchannels(),
+                        rate=f.getframerate(),
+                        output=True)
 
-    query = response.json()
-    
-    response = requests.post(f"{VOICEVOX_URL}/synthesis", json=query, params=params)
-    if response.status_code != 200:
-        print("音声合成に失敗しました")
-        return None
+        # チャンクサイズを設定
+        chunk_size = 1024
 
-    return response.content
+        # wavファイルを再生
+        data = f.readframes(chunk_size)
+        while data:
+            stream.write(data)
+            data = f.readframes(chunk_size)
 
-def play_audio(audio_data):
-    """音声データを再生する"""
-    with wave.open("output.wav", "wb") as wf:
-        wf.setnchannels(1)
-        wf.setsampwidth(2)
-        wf.setframerate(24000)
-        wf.writeframes(audio_data)
+        time.sleep(0.5)  # 0.5s待つ これがないと文末が途切れる
 
-    # 音声を再生
-    with wave.open("output.wav", "rb") as wf:
-        data = wf.readframes(wf.getnframes())
-        audio = np.frombuffer(data, dtype=np.int16)
-        sd.play(audio, samplerate=24000)
-        sd.wait()
+        # StreamとPyAudioインスタンスを終了
+        stream.stop_stream()
+        stream.close()
+        p.terminate()
+
+def voicebox_speech(text):
+    mutex_lock = Lock()
+    query = {
+        'speaker': 1,
+        'text': text
+    }
+    response = requests.post(
+        'http://127.0.0.1:50021/audio_query?' + urllib.parse.urlencode(query))
+    query = response.content
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(
+        'http://127.0.0.1:50021/synthesis?speaker=1', data=query, headers=headers)
+    with mutex_lock:
+        with open('audio.wav', 'wb') as f:
+            f.write(response.content)
+        playwav("audio.wav")
+        os.remove("audio.wav")
+    return True
 
 if __name__ == "__main__":
     while True:
-        text = input("読み上げるテキストを入力 (qで終了): ")
-        if text.lower() == "q":
+        # ユーザー入力を取得
+        user_input = input("話す内容を入力してください (終了するには'quit'と入力): ")
+        if user_input.lower() == 'quit':
+            print("終了します。")
             break
-        audio_data = synthesize_speech(text)
-        if audio_data:
-            play_audio(audio_data)
+        voicebox_speech(user_input)
