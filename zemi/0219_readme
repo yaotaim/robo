@@ -66,3 +66,11 @@ b3_3@sirius-NUC13ANHi5:~$ curl -s curl -s https://api.github.com/repos/VOICEVOX/
 
 wget -c https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-cpu-0.22.2.7z.001
 
+b3_3@sirius-NUC13ANHi5:~$ ls
+linux-cpu  voicevox_engine-linux-cpu-0.22.2.7z.001  デスクトップ  ミュージック
+run.bash   voicevox_engine-linux-x64.zip            ドキュメント  公開
+snap       ダウンロード                             ビデオ
+tanaka     テンプレート                             ピクチャ
+b3_3@sirius-NUC13ANHi5:~$ cd voicevox_engine-linux-cpu-0.22.2
+bash: cd: voicevox_engine-linux-cpu-0.22.2: そのようなファイルやディレクトリはありません
+
