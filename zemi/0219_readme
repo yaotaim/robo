@@ -64,3 +64,5 @@ b3_3@sirius-NUC13ANHi5:~$ curl -s curl -s https://api.github.com/repos/VOICEVOX/
       "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-windows-nvidia-0.22.2.7z.002"
       "browser_download_url": "https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-windows-nvidia-0.22.2.7z.txt"
 
+wget -c https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-cpu-0.22.2.7z.001
+
