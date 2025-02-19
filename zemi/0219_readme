@@ -1,28 +1,4 @@
-b3_3@sirius-NUC13ANHi5:~$ ls
-linux-cpu  voicevox_engine-linux-cpu-0.22.2.7z.001  デスクトップ  ミュージック
-run.bash   voicevox_engine-linux-x64.zip            ドキュメント  公開
-snap       ダウンロード                             ビデオ
-tanaka     テンプレート                             ピクチャ
-b3_3@sirius-NUC13ANHi5:~$ cd voicevox_engine-linux-cpu-0.22.2
-bash: cd: voicevox_engine-linux-cpu-0.22.2: そのようなファイルやディレクトリはありません
-b3_3@sirius-NUC13ANHi5:~$ b3_3@sirius-NUC13ANHi5:~$ ls
-linux-cpu  voicevox_engine-linux-cpu-0.22.2.7z.001  デスクトップ  ミュージック
-run.bash   voicevox_engine-linux-x64.zip            ドキュメント  公開
-snap       ダウンロード                             ビデオ
-tanaka     テンプレート                             ピクチャ
-b3_3@sirius-NUC13ANHi5:~$ cd voicevox_engine-linux-cpu-0.22.2
-bash: cd: voicevox_engine-linux-cpu-0.22.2: そのようなファイルやディレクトリはありません
-b3_3@sirius-NUC13ANHi5:~$ ls
-linux-cpu  voicevox_engine-linux-cpu-0.22.2.7z.001  デスクトップ  ミュージック
-run.bash   voicevox_engine-linux-x64.zip            ドキュメント  公開
-snap       ダウンロード                             ビデオ
-tanaka     テンプレート                             ピクチャ
-b3_3@sirius-NUC13ANHi5:~$ cd voicevox_engine-linux-cpu-0.22.2
-bash: cd: voicevox_engine-linux-cpu-0.22.2: そのようなファイルやディレクトリはありません
-b3_3@sirius-NUC13ANHi5:~$ wget -c https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-cpu-0.22.2.7z.001
---2025-02-19 11:48:05--  https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-cpu-0.22.2.7z.001
-github.com (github.com) をDNSに問いあわせています... 20.27.177.113
-github.com (github.com)|20.27.177.113|:443 に接続しています... 接続しました。
-HTTP による接続要求を送信しました、応答を待っています... 302 Found
-場所: https://objects.githubusercontent.com/github-production-release-asset-2e65be/389985077/50816308-9c6a-474d-be3d-db17713e6e36?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=releaseassetproduction%2F20250219%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250219T024805Z&X-Amz-Expires=300&X-Amz-Signature=9c371528447e61c5445003adce0eeb574856225c85611e3162b9fd32d95fa19d&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3Dvoicevox_engine-linux-cpu-りません: voicevox_engine-linux-cpu-0.22.2: そのようなファイルやディレクトリはあ
+wget -c https://github.com/VOICEVOX/voicevox_engine/releases/download/0.22.2/voicevox_engine-linux-cpu-0.22.2.7z.001
+その後、再度解凍を試してみてください。
 
+7z x voicevox_engine-linux-cpu-0.22.2.7z.001
