@@ -1,16 +1,27 @@
-from openai import OpenAI 
+from openai import OpenAI
 import os
 
-## Set the API key and model name
-MODEL="gpt-4o-mini"
+# OpenAI APIのモデル名を設定
+MODEL = "gpt-4o-mini"
+
+# OpenAI APIのクライアントを作成
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
+# gpt.txt からシステムメッセージを読み込む
+with open("gpt.txt", "r", encoding="utf-8") as f:
+    system_message = f.read().strip()
+
+# ユーザーの入力を取得
+user_input = input("You: ")
+
+# OpenAIのAPIを使ってチャットのレスポンスを生成
 completion = client.chat.completions.create(
-  model=MODEL,
-  messages=[
-    {"role": "system", "content": "You are a helpful assistant. Help me with my math homework!"}, # <-- This is the system message that provides context to the model
-    {"role": "user", "content": "Hello! Could you solve 2+2?"}  # <-- This is the user message for which the model will generate a response
-  ]
+    model=MODEL,
+    messages=[
+        {"role": "system", "content": system_message},
+        {"role": "user", "content": user_input}
+    ]
 )
 
+# AIの応答を出力
 print("Assistant: " + completion.choices[0].message.content)
