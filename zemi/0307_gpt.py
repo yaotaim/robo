@@ -8,7 +8,7 @@ MODEL = "gpt-4o-mini"
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 # gpt.txt からシステムメッセージを読み込む
-with open("gpt.txt", "r", encoding="utf-8") as f:
+with open("chat.txt", "r", encoding="utf-8") as f:
     system_message = f.read().strip()
 
 # ユーザーの入力を取得
