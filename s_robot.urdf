@@ -1,0 +1,335 @@
+<?xml version='1.0' ?>
+<robot name="s_robot">
+    <link name="base_link">
+        <inertial>
+            <origin xyz="8.54569035226906e-17 -0.0006392934560197189 0.03871573521236638" rpy="0.0 0.0 0.0" />
+            <mass value="3.610013821287872" />
+            <inertia ixx="0.017056281057925945" iyy="0.013887496961575794" izz="0.027340455097897343" ixy="-4.876281749059507e-16" iyz="9.473120698917714e-05" ixz="-1.2736220574848013e-17" />
+        </inertial>
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/base_base_link.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/base_base_link.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="base_footprint"/>
+    <joint name="base_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="base_footprint"/>
+        <origin xyz="0.0 0.0 -0.075" rpy="0 0 0"/>
+    </joint>
+
+    <link name="realsense_link">
+        <inertial>
+            <origin xyz="0.0 -1.333802631412695e-05 0.012500000000000018" rpy="0.0 -0.0 0.0" />
+            <mass value="0.06746463608660674" />
+            <inertia ixx="8.37036059292179e-06" iyy="4.430948396816966e-05" izz="4.6058794783923325e-05" ixy="2.4101609596982597e-20" iyz="-1.0842021724855044e-19" ixz="-5.422862159321085e-20" />
+        </inertial>
+        <visual>
+            <origin xyz="0.0 0.1075 -0.0835" rpy="0.0 -0.0 0.0" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/realsense_link.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.1075 -0.0835" rpy="0.0 -0.0 0.0" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/realsense_link.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="base_link_realsense_link" type="fixed">
+        <origin xyz="0.0 -0.1075 0.0835" rpy="0.0 -0.0 0.0" />
+        <parent link="base_link" />
+        <child link="realsense_link" />
+    </joint>
+  
+    <link name="PSD_link_br">
+        <inertial>
+            <origin xyz="-0.011658733268555493 0.01165873326855551 0.016112041543336755" rpy="0.0 -0.0 0.0" />
+            <mass value="0.02515889626693085" />
+            <inertia ixx="5.056809707514498e-06" iyy="5.056809707514498e-06" izz="7.200431573253763e-06" ixy="-8.361362551086941e-07" iyz="-7.718229165227088e-07" ixz="7.71822916522763e-07" />
+        </inertial>
+        <visual>
+            <origin xyz="-0.15994755533998098 0.12742064340539982 8.881784197001253e-18" rpy="0.0 -0.0 0.7853981633974482" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/PSD_link_br.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="-0.15994755533998098 0.12742064340539982 8.881784197001253e-18" rpy="0.0 -0.0 0.7853981633974482" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/PSD_link_br.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="base_link_PSD_link_br" type="fixed">
+        <origin xyz="-0.07653806 0.07653806 0.076" rpy="0.0 -0.0 0.0" />
+        <parent link="base_link" />
+        <child link="PSD_link_br" />
+    </joint>
+
+    <link name="wheel_link_fl">
+        <inertial>
+            <origin xyz="4.276579090856103e-15 0.0 0.027430248686366027" rpy="0.0 -0.0 0.0" />
+            <mass value="0.17011333409377077" />
+            <inertia ixx="7.94423925089124e-05" iyy="7.944239251169317e-05" izz="0.00012394813612121285" ixy="1.6263032587282567e-19" iyz="0.0" ixz="1.6371452804531117e-17" />
+        </inertial>
+        <visual>
+            <origin xyz="0.19000000283122023 -1.7763568394002505e-17 0.0" rpy="0.0 -0.0 0.0" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/wheel_link_fl.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.19000000283122023 -1.7763568394002505e-17 0.0" rpy="0.0 -0.0 0.0" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/wheel_link_fl.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="base_link_wheel_link_fl" type="continuous">
+        <origin xyz="0.07 -0.08252000000000001 0.021" rpy="-3.141592653589793 -1.5707963267948966 0" />
+        <parent link="base_link" />
+        <child link="wheel_link_fl" />
+        <axis xyz="0.0 0.0 1.0" />
+    </joint>
+    
+
+    <link name="wheel_link_bl">
+        <inertial>
+            <origin xyz="1.4699352846037073e-15 -4.245492846166599e-15 0.027430248686366066" rpy="0.0 -0.0 0.0" />
+            <mass value="0.17011333409377077" />
+            <inertia ixx="7.944239251125645e-05" iyy="7.944239250932332e-05" izz="0.00012394813612121545" ixy="9.80715075121763e-16" iyz="-1.5612511283791264e-17" ixz="6.451002926288751e-18" />
+        </inertial>
+        <visual>
+            <origin xyz="0.07337050659685142 -0.17526200340514572 -8.881784197001253e-18" rpy="0.0 -0.0 -1.1743306872539239" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/wheel_link_bl.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.07337050659685142 -0.17526200340514572 -8.881784197001253e-18" rpy="0.0 -0.0 -1.1743306872539239" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/wheel_link_bl.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="base_link_wheel_link_bl" type="continuous">
+        <origin xyz="0.07 0.08252000000000001 0.021" rpy="-3.141592653589793 -1.5707963267948966 0" />
+        <parent link="base_link" />
+        <child link="wheel_link_bl" />
+        <axis xyz="0.0 0.0 1.0" />
+    </joint>
+
+    <link name="wheel_link_br">
+        <inertial>
+            <origin xyz="-4.249933738265099e-15 -3.552713678800501e-17 0.027430248686366066" rpy="0.0 -0.0 0.0" />
+            <mass value="0.17011333409377077" />
+            <inertia ixx="7.944239250891284e-05" iyy="7.944239251166693e-05" izz="0.00012394813612121329" ixy="2.710505431213761e-19" iyz="2.168404344971009e-19" ixz="-1.6479873021779667e-17" />
+        </inertial>
+        <visual>
+            <origin xyz="-0.19000000283122062 0.0 -8.881784197001253e-18" rpy="0.0 -0.0 3.141592653589793" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/wheel_link_br.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="-0.19000000283122062 0.0 -8.881784197001253e-18" rpy="0.0 -0.0 3.141592653589793" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/wheel_link_br.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="base_link_wheel_link_br" type="continuous">
+        <origin xyz="-0.07 0.08252000000000001 0.021" rpy="-0.0 -1.5707963267948966 0" />
+        <parent link="base_link" />
+        <child link="wheel_link_br" />
+        <axis xyz="0.0 0.0 1.0" />
+    </joint>
+
+    <link name="wheel_link_fr">
+        <inertial>
+            <origin xyz="-6.217248937900877e-17 4.245492846166599e-15 0.02743024868636601" rpy="0.0 -0.0 0.0" />
+            <mass value="0.17011333409377077" />
+            <inertia ixx="7.944239251169317e-05" iyy="7.944239250891197e-05" izz="0.00012394813612122174" ixy="1.1384122811097797e-18" iyz="1.6479873021779667e-17" ixz="0.0" />
+        </inertial>
+        <visual>
+            <origin xyz="-4.440892098500626e-18 0.19000000283122007 -8.881784197001253e-18" rpy="0.0 -0.0 1.5707963267948963" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/wheel_link_fr.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="-4.440892098500626e-18 0.19000000283122007 -8.881784197001253e-18" rpy="0.0 -0.0 1.5707963267948963" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/wheel_link_fr.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="base_link_wheel_link_fr" type="continuous">
+        <origin xyz="-0.07 -0.08252000000000001 0.021" rpy="-0.0 -1.5707963267948966 0" />
+        <parent link="base_link" />
+        <child link="wheel_link_fr" />
+        <axis xyz="0.0 0.0 1.0" />
+    </joint>
+
+    <link name="PSD_link_fl">
+        <inertial>
+            <origin xyz="0.011658733268555474 -0.011658733268555528 0.016112041543336755" rpy="0.0 -0.0 0.0" />
+            <mass value="0.02515889626693085" />
+            <inertia ixx="5.056809707514498e-06" iyy="5.056809707514607e-06" izz="7.2004315732538174e-06" ixy="-8.361362551086399e-07" iyz="7.71822916522763e-07" ixz="-7.71822916522763e-07" />
+        </inertial>
+        <visual>
+            <origin xyz="0.15994755533998098 -0.12742064340539982 8.881784197001253e-18" rpy="0.0 -0.0 -2.356194490192345" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/PSD_link_fl.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.15994755533998098 -0.12742064340539982 8.881784197001253e-18" rpy="0.0 -0.0 -2.356194490192345" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/PSD_link_fl.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="base_link_PSD_link_fl" type="fixed">
+        <origin xyz="0.07653806 -0.07653806 0.076" rpy="0.0 -0.0 0.0" />
+        <parent link="base_link" />
+        <child link="PSD_link_fl" />
+    </joint>
+
+    <link name="PSD_link_bl">
+        <inertial>
+            <origin xyz="0.011658733268555493 -0.011658733268555474 -0.016112041543336755" rpy="0.0 -0.0 0.0" />
+            <mass value="0.02515889626693085" />
+            <inertia ixx="5.056809707514607e-06" iyy="5.056809707514498e-06" izz="7.200431573253763e-06" ixy="-8.361362551086127e-07" iyz="-7.71822916522763e-07" ixz="7.718229165227901e-07" />
+        </inertial>
+        <visual>
+            <origin xyz="0.1274206434053998 -0.15994755533998098 -8.881784197001253e-18" rpy="3.141592653589793 -0.0 0.7853981633974482" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/PSD_link_bl.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.1274206434053998 -0.15994755533998098 -8.881784197001253e-18" rpy="3.141592653589793 -0.0 0.7853981633974482" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/PSD_link_bl.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="base_link_PSD_link_bl" type="fixed">
+        <origin xyz="0.07653806 0.07653806 0.076" rpy="3.141592653589793 -0.0 0.0" />
+        <parent link="base_link" />
+        <child link="PSD_link_bl" />
+    </joint>
+
+    <link name="PSD_link_fr">
+        <inertial>
+            <origin xyz="-0.011658733268555582 0.011658733268555528 -0.016112041543336755" rpy="0.0 -0.0 0.0" />
+            <mass value="0.02515889626693085" />
+            <inertia ixx="5.056809707514498e-06" iyy="5.056809707514607e-06" izz="7.200431573253709e-06" ixy="-8.361362551087212e-07" iyz="7.71822916522763e-07" ixz="-7.71822916522763e-07" />
+        </inertial>
+        <visual>
+            <origin xyz="-0.1274206434053999 0.15994755533998103 -8.881784197001253e-18" rpy="3.141592653589793 -0.0 -2.356194490192345" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/PSD_link_fr.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="-0.1274206434053999 0.15994755533998103 -8.881784197001253e-18" rpy="3.141592653589793 -0.0 -2.356194490192345" />
+            <geometry>
+                <mesh filename="file:///home/yaotai/cha_ws/src/cha_test/urdf/meshes/PSD_link_fr.stl" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="base_link_PSD_link_fr" type="fixed">
+        <origin xyz="-0.07653806 -0.07653806 0.076" rpy="3.141592653589793 -0.0 0.0" />
+        <parent link="base_link" />
+        <child link="PSD_link_fr" />
+    </joint>
+
+    <!-- front diff drive status -->
+    <gazebo>
+        <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
+            <ros>
+                <remapping>cmd_vel:=cmd_vel</remapping>
+                <namespace>/first_robot</namespace>
+                <remapping>odom:=odom</remapping>
+            </ros>
+            <left_joint>base_link_wheel_link_fl</left_joint>
+            <right_joint>base_link_wheel_link_fr</right_joint>
+            <wheel_separation>0.4</wheel_separation>
+            <wheel_diameter>0.15</wheel_diameter>
+            <max_wheel_torque>20</max_wheel_torque>
+            <max_wheel_acceleration>1.0</max_wheel_acceleration>
+            <publish_odom>true</publish_odom>
+            <publish_odom_tf>false</publish_odom_tf>
+            <publish_wheel_tf>true</publish_wheel_tf>
+            <update_rate>30</update_rate>
+
+            <odometry_topic>odom</odometry_topic>
+            <odometry_frame>odom</odometry_frame>
+            <base_frame_id>base_footprint</base_frame_id>
+            <robot_base_frame>base_link</robot_base_frame>
+            <command_topic>cmd_vel</command_topic>
+        </plugin>
+    </gazebo>
+
+
+    <!-- camera plugin -->
+    <gazebo reference="realsense_link">
+        <sensor type="camera" name="camera1">
+            <alwaysOn>true</alwaysOn>
+            <visualize>true</visualize>
+            <update_rate>30.0</update_rate>
+            <camera name="head">
+                <horizontal_fov>1.3962634</horizontal_fov>
+                <image>
+                    <width>800</width>
+                    <height>800</height>
+                    <format>R8G8B8</format>
+                </image>
+                <clip>
+                    <near>0.02</near>
+                    <far>300</far>
+                </clip>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.007</stddev>
+                </noise>
+            </camera>
+            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+                <cameraName>/camera</cameraName>
+                <imageTopicName>image_raw</imageTopicName>
+                <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+                <frameName>realsense_link</frameName>
+                <hackBaseline>0.07</hackBaseline>
+                <ros>
+                    <namespace>/first_robot</namespace>
+                </ros>
+            </plugin>
+        </sensor>
+        <material>Gazebo/Blue</material>
+    </gazebo>
+    
+
+</robot>
